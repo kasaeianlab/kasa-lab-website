@@ -1,11 +1,174 @@
+```html
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="KASA Lab — Knowledge-based Advanced Solutions Association. Research, simulation and engineering."><title>KASA Lab | Research, Simulation & Engineering</title><link rel="stylesheet" href="styles.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="KASA Lab — Knowledge-based Advanced Solutions Association. Research, simulation and engineering.">
+  <title>KASA Lab | Research, Simulation & Engineering</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-<header class="site-header"><a class="brand" href="index.html"><span class="brand-name">KASA Lab</span><span class="brand-tagline">Knowledge-based Advanced Solutions Association</span></a><button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button><nav class="nav"><a class="active" href="index.html">Home</a><a href="about.html">About Us</a><a href="news.html">News</a><a href="contact.html">Contact Us</a></nav></header>
+
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <span class="brand-name">KASA Lab</span>
+    <span class="brand-tagline">Knowledge-based Advanced Solutions Association</span>
+  </a>
+  <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  <nav class="nav">
+    <a class="active" href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="news.html">News</a>
+    <a href="contact.html">Contact Us</a>
+  </nav>
+</header>
+
 <main>
-<section class="hero"><div class="hero-shade"></div><div class="hero-content"><p class="eyebrow">RESEARCH · SIMULATION · ENGINEERING</p><h1>Knowledge into<br><span>real-world solutions.</span></h1><p class="hero-copy">KASA Lab develops knowledge-driven solutions to complex challenges in energy, water, and advanced engineering systems.</p><div class="hero-actions"><a class="button button-primary" href="about.html">Discover KASA Lab <span>→</span></a><a class="button button-outline" href="news.html">Latest news</a></div></div><div class="hero-note">Research. Model. Solve.</div></section>
-<section class="section focus-section"><div class="section-heading"><p class="eyebrow blue">WHAT WE DO</p><h2>Research with practical impact</h2><p>We bring together scientific research, computational modeling, numerical simulation, programming, artificial intelligence, optimization, and experimental approaches.</p></div><div class="focus-grid"><article class="focus-card"><span class="focus-icon">☼</span><h3>Energy & Renewables</h3><p>Renewable energy, solar systems, photovoltaic technologies, and energy-system analysis.</p></article><article class="focus-card"><span class="focus-icon">≈</span><h3>Fluid Mechanics</h3><p>Fluid-flow analysis, computational studies, and advanced numerical simulation.</p></article><article class="focus-card"><span class="focus-icon">◉</span><h3>Water & Environment</h3><p>Water treatment, desalination, photocatalysis, and sustainable engineering solutions.</p></article><article class="focus-card"><span class="focus-icon">⌘</span><h3>AI & Optimization</h3><p>Machine learning, data-driven modeling, optimization, and technology development.</p></article></div></section>
-<section class="section news-section"><div class="section-title-row"><div><p class="eyebrow blue">FROM THE LAB</p><h2>Latest news</h2></div><a class="text-link" href="news.html">All news →</a></div><div class="news-grid" id="home-news"><article class="news-card"><div class="news-image image-energy"></div><div class="news-body"><p class="news-date">KASA Lab</p><h3>Research, simulation and engineering</h3><p>Updates from our research activities and collaborations will appear here.</p><a href="news.html" class="text-link">Explore news →</a></div></article><article class="news-card"><div class="news-image image-water"></div><div class="news-body"><p class="news-date">Research areas</p><h3>Solutions across disciplines</h3><p>Our work connects scientific knowledge with practical engineering applications.</p><a href="about.html" class="text-link">About our work →</a></div></article><article class="news-card"><div class="news-image image-flow"></div><div class="news-body"><p class="news-date">Join the conversation</p><h3>Collaborate with KASA Lab</h3><p>We welcome collaboration with researchers, universities, and industry partners.</p><a href="contact.html" class="text-link">Contact us →</a></div></article></div><p class="small-note">Replace these starter cards with real lab news through the content files or management panel.</p></section>
-<section class="cta-band"><div><p class="eyebrow">KASA LAB</p><h2>Turning research into practical solutions.</h2></div><a class="button button-light" href="contact.html">Get in touch →</a></section>
-</main><footer class="site-footer"><a class="footer-brand" href="index.html">KASA Lab</a><p>Knowledge-based Advanced Solutions Association</p><div class="footer-links"><a href="about.html">About Us</a><a href="news.html">News</a><a href="contact.html">Contact</a></div><small>© <span id="year"></span> KASA Lab. All rights reserved.</small></footer><script src="script.js"></script></body></html>
+  <section class="hero">
+    <div class="hero-shade"></div>
+    <div class="hero-content">
+      <p class="eyebrow">RESEARCH · SIMULATION · ENGINEERING</p>
+      <h1>Knowledge into<br><span>real-world solutions.</span></h1>
+      <p class="hero-copy">KASA Lab develops knowledge-driven solutions to complex challenges in energy, water, and advanced engineering systems.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="about.html">Discover KASA Lab <span>→</span></a>
+        <a class="button button-outline" href="news.html">Latest news</a>
+      </div>
+    </div>
+    <div class="hero-note">Research. Model. Solve.</div>
+  </section>
+
+  <section class="section focus-section">
+    <div class="section-heading">
+      <p class="eyebrow blue">WHAT WE DO</p>
+      <h2>Research with practical impact</h2>
+      <p>We bring together scientific research, computational modeling, numerical simulation, programming, artificial intelligence, optimization, and experimental approaches.</p>
+    </div>
+
+    <div class="focus-grid">
+      <article class="focus-card">
+        <span class="focus-icon">☼</span>
+        <h3>Energy & Renewables</h3>
+        <p>Renewable energy, solar systems, photovoltaic technologies, and energy-system analysis.</p>
+      </article>
+      <article class="focus-card">
+        <span class="focus-icon">≈</span>
+        <h3>Fluid Mechanics</h3>
+        <p>Fluid-flow analysis, computational studies, and advanced numerical simulation.</p>
+      </article>
+      <article class="focus-card">
+        <span class="focus-icon">◉</span>
+        <h3>Water & Environment</h3>
+        <p>Water treatment, desalination, photocatalysis, and sustainable engineering solutions.</p>
+      </article>
+      <article class="focus-card">
+        <span class="focus-icon">⌘</span>
+        <h3>AI & Optimization</h3>
+        <p>Machine learning, data-driven modeling, optimization, and technology development.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section news-section">
+    <div class="section-title-row">
+      <div>
+        <p class="eyebrow blue">FROM THE LAB</p>
+        <h2>Latest news</h2>
+      </div>
+      <a class="text-link" href="news.html">All news →</a>
+    </div>
+
+    <div class="news-grid" id="home-news">
+      <p class="small-note">Loading the latest news…</p>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div>
+      <p class="eyebrow">KASA LAB</p>
+      <h2>Turning research into practical solutions.</h2>
+    </div>
+    <a class="button button-light" href="contact.html">Get in touch →</a>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <a class="footer-brand" href="index.html">KASA Lab</a>
+  <p>Knowledge-based Advanced Solutions Association</p>
+  <div class="footer-links">
+    <a href="about.html">About Us</a>
+    <a href="news.html">News</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <small>© <span id="year"></span> KASA Lab. All rights reserved.</small>
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+  async function loadHomeNews() {
+    const container = document.getElementById("home-news");
+
+    try {
+      const response = await fetch("public/data/news.json");
+
+      if (!response.ok) {
+        throw new Error("Could not load news data");
+      }
+
+      const news = await response.json();
+      container.replaceChildren();
+
+      if (!Array.isArray(news) || news.length === 0) {
+        container.innerHTML = '<p class="small-note">New research updates will appear here soon.</p>';
+        return;
+      }
+
+      news.slice(0, 3).forEach(item => {
+        const card = document.createElement("article");
+        card.className = "news-card";
+
+        if (item.image) {
+          const image = document.createElement("div");
+          image.className = "news-image";
+          image.style.backgroundImage = `url("${item.image}")`;
+          image.style.backgroundSize = "cover";
+          image.style.backgroundPosition = "center";
+          card.appendChild(image);
+        }
+
+        const body = document.createElement("div");
+        body.className = "news-body";
+
+        const date = document.createElement("p");
+        date.className = "news-date";
+        date.textContent = item.date || "";
+
+        const title = document.createElement("h3");
+        title.textContent = item.title || "Untitled news";
+
+        const summary = document.createElement("p");
+        summary.textContent = item.summary || "";
+
+        const link = document.createElement("a");
+        link.className = "text-link";
+        link.href = "news-article.html?slug=" + encodeURIComponent(item.slug);
+        link.textContent = "Read More →";
+
+        body.append(date, title, summary, link);
+        card.appendChild(body);
+        container.appendChild(card);
+      });
+    } catch (error) {
+      container.innerHTML = '<p class="small-note">News could not be loaded. Please visit the <a href="news.html">News page</a>.</p>';
+      console.error("Error loading homepage news:", error);
+    }
+  }
+
+  loadHomeNews();
+</script>
+
+</body>
+</html>
+```
