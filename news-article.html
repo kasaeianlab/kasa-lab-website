@@ -1,0 +1,191 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="News article from KASA Lab.">
+  <title>News Article | KASA Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .article-container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+    .article-date {
+      color: #718096;
+      font-size: .9rem;
+    }
+    .article-title {
+      line-height: 1.2;
+      margin: 16px 0 24px;
+    }
+    .article-cover {
+      display: block;
+      width: 100%;
+      max-height: 460px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+    .article-content {
+      line-height: 1.85;
+      overflow-wrap: anywhere;
+    }
+    .article-content p {
+      margin: 0 0 1.2em;
+    }
+    .article-content h2,
+    .article-content h3 {
+      margin-top: 1.6em;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="brand-name">KASA Lab</span>
+      <span class="brand-tagline">Knowledge-based Advanced Solutions Association</span>
+    </a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a class="active" href="news.html">News</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+  </header>
+
+  <main class="article-container">
+    <p class="eyebrow blue">KASA LAB NEWS</p>
+    <p id="article-date" class="article-date"></p>
+    <h1 id="article-title" class="article-title">Loading article...</h1>
+    <img id="article-cover" class="article-cover" alt="" hidden>
+    <article id="article-content" class="article-content"></article>
+    <p id="article-status" aria-live="polite"></p>
+    <a class="back-link" href="news.html">← Back to all news</a>
+  </main>
+
+  <footer class="site-footer">
+    <a class="footer-brand" href="index.html">KASA Lab</a>
+    <p>Knowledge-based Advanced Solutions Association</p>
+    <div class="footer-links">
+      <a href="about.html">About Us</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <small>© <span id="year"></span> KASA Lab. All rights reserved.</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function renderMarkdown(text, container) {
+      // Escape HTML before formatting Markdown to prevent injected HTML.
+      const escapeHTML = value => value.replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+
+      const lines = String(text || "").split(/\r?\n/);
+      let paragraph = [];
+
+      function flushParagraph() {
+        if (!paragraph.length) return;
+        const p = document.createElement("p");
+        p.textContent = paragraph.join(" ");
+        container.appendChild(p);
+        paragraph = [];
+      }
+
+      lines.forEach(line => {
+        const trimmed = line.trim();
+
+        if (!trimmed) {
+          flushParagraph();
+          return;
+        }
+
+        const heading = trimmed.match(/^(#{1,3})\s+(.+)$/);
+        if (heading) {
+          flushParagraph();
+          const h = document.createElement(
+            "h" + Math.min(heading[1].length + 1, 4)
+          );
+          h.textContent = heading[2];
+          container.appendChild(h);
+          return;
+        }
+
+        if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+          flushParagraph();
+          container.appendChild(document.createElement("hr"));
+          return;
+        }
+
+        paragraph.push(trimmed);
+      });
+
+      flushParagraph();
+    }
+
+    async function loadArticle() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("slug");
+      const status = document.getElementById("article-status");
+
+      if (!slug) {
+        document.getElementById("article-title").textContent =
+          "Article not specified";
+        status.textContent = "Please select an article from the News page.";
+        return;
+      }
+
+      try {
+        const response = await fetch("public/data/news.json");
+        if (!response.ok) throw new Error("Could not load news data");
+
+        const news = await response.json();
+        const item = news.find(entry => entry.slug === slug);
+
+        if (!item) {
+          throw new Error("Article not found");
+        }
+
+        document.title = item.title + " | KASA Lab";
+        document.getElementById("article-title").textContent = item.title || "";
+        document.getElementById("article-date").textContent = item.date || "";
+
+        if (item.image) {
+          const cover = document.getElementById("article-cover");
+          cover.src = item.image;
+          cover.alt = item.title || "KASA Lab article";
+          cover.hidden = false;
+        }
+
+        const content = document.getElementById("article-content");
+        renderMarkdown(item.body, content);
+
+        if (!item.body) {
+          content.textContent = item.summary || "";
+        }
+      } catch (error) {
+        document.getElementById("article-title").textContent =
+          "Article unavailable";
+        status.textContent =
+          "This article could not be loaded. Please return to the News page.";
+        console.error(error);
+      }
+    }
+
+    loadArticle();
+  </script>
+</body>
+</html>
