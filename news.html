@@ -1,1 +1,116 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="News and updates from KASA Lab."><title>News | KASA Lab</title><link rel="stylesheet" href="styles.css"></head><body><header class="site-header"><a class="brand" href="index.html"><span class="brand-name">KASA Lab</span><span class="brand-tagline">Knowledge-based Advanced Solutions Association</span></a><button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button><nav class="nav"><a href="index.html">Home</a><a href="about.html">About Us</a><a class="active" href="news.html">News</a><a href="contact.html">Contact Us</a></nav></header><main><section class="page-hero"><p class="eyebrow blue">UPDATES & ANNOUNCEMENTS</p><h1>News from <span>KASA Lab.</span></h1><p>Research updates, publications, collaborations, events and achievements.</p></section><section class="section"><div class="news-grid news-grid-wide" id="news-list"><article class="news-card"><div class="news-image image-energy"></div><div class="news-body"><p class="news-date">Starter content</p><h3>Your first lab update goes here</h3><p>This is a placeholder. Replace it with a real announcement, publication, project update, or event.</p></div></article><article class="news-card"><div class="news-image image-water"></div><div class="news-body"><p class="news-date">Research</p><h3>Share a research highlight</h3><p>Add a short summary and link to a publication or project when available.</p></div></article><article class="news-card"><div class="news-image image-flow"></div><div class="news-body"><p class="news-date">Community</p><h3>Introduce a collaboration or event</h3><p>Keep the lab community informed about seminars, visits, and achievements.</p></div></article></div><p class="small-note">News items are starter placeholders and should be replaced before the site is announced publicly.</p></section></main><footer class="site-footer"><a class="footer-brand" href="index.html">KASA Lab</a><p>Knowledge-based Advanced Solutions Association</p><div class="footer-links"><a href="about.html">About Us</a><a href="news.html">News</a><a href="contact.html">Contact</a></div><small>© <span id="year"></span> KASA Lab. All rights reserved.</small></footer><script src="script.js"></script></body></html>
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="News and updates from KASA Lab.">
+  <title>News | KASA Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="brand-name">KASA Lab</span>
+      <span class="brand-tagline">Knowledge-based Advanced Solutions Association</span>
+    </a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a class="active" href="news.html">News</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow blue">UPDATES & ANNOUNCEMENTS</p>
+      <h1>News from <span>KASA Lab.</span></h1>
+      <p>Research updates, publications, collaborations, events and achievements.</p>
+    </section>
+
+    <section class="section">
+      <div class="news-grid news-grid-wide" id="news-list">
+        <p>Loading news...</p>
+      </div>
+      <p class="small-note" id="news-status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="footer-brand" href="index.html">KASA Lab</a>
+    <p>Knowledge-based Advanced Solutions Association</p>
+    <div class="footer-links">
+      <a href="about.html">About Us</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <small>© <span id="year"></span> KASA Lab. All rights reserved.</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    async function loadNews() {
+      const list = document.getElementById("news-list");
+      const status = document.getElementById("news-status");
+
+      try {
+        const response = await fetch("public/data/news.json");
+        if (!response.ok) throw new Error("News data unavailable");
+
+        const news = await response.json();
+        list.replaceChildren();
+
+        if (!news.length) {
+          list.textContent = "No news has been published yet.";
+          return;
+        }
+
+        news.sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+
+        news.forEach(item => {
+          const card = document.createElement("article");
+          card.className = "news-card";
+
+          if (item.image) {
+            const image = document.createElement("img");
+            image.className = "news-image";
+            image.src = item.image;
+            image.alt = item.title || "KASA Lab news";
+            image.loading = "lazy";
+            image.style.width = "100%";
+            image.style.objectFit = "cover";
+            card.appendChild(image);
+          }
+
+          const body = document.createElement("div");
+          body.className = "news-body";
+
+          const date = document.createElement("p");
+          date.className = "news-date";
+          date.textContent = item.date || "";
+
+          const title = document.createElement("h3");
+          title.textContent = item.title || "Untitled news";
+
+          const summary = document.createElement("p");
+          summary.textContent = item.summary || "";
+
+          body.append(date, title, summary);
+          card.appendChild(body);
+          list.appendChild(card);
+        });
+
+        status.textContent = "";
+      } catch (error) {
+        list.textContent = "News could not be loaded. Please try again later.";
+        status.textContent = "If this problem persists, please contact the website administrator.";
+        console.error(error);
+      }
+    }
+
+    loadNews();
+  </script>
+</body>
+</html>
