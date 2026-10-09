@@ -1,0 +1,72 @@
+
+name: Build website content
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "content/news/**"
+      - "content/team/**"
+      - ".github/workflows/build-content.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[skip content build]')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate JSON files
+        run: |
+          python -m pip install pyyaml
+          python <<'PY'
+          import json
+          import re
+          import yaml
+          from pathlib import Path
+
+          def read_collection(folder):
+              entries = []
+              for path in sorted(Path(folder).glob("*.md")):
+                  text = path.read_text(encoding="utf-8")
+                  match = re.match(r"\A---\s*\n(.*?)\n---\s*\n?(.*)\Z", text, re.S)
+                  if not match:
+                      continue
+                  data = yaml.safe_load(match.group(1)) or {}
+                  data["body"] = match.group(2).strip()
+                  data["slug"] = path.stem
+                  entries.append(data)
+              return entries
+
+          Path("public/data").mkdir(parents=True, exist_ok=True)
+
+          news = read_collection("content/news")
+          news.sort(key=lambda item: str(item.get("date", "")), reverse=True)
+          Path("public/data/news.json").write_text(
+              json.dumps(news, ensure_ascii=False, indent=2, default=str),
+              encoding="utf-8"
+          )
+
+          team = read_collection("content/team")
+          Path("public/data/team.json").write_text(
+              json.dumps(team, ensure_ascii=False, indent=2, default=str),
+              encoding="utf-8"
+          )
+          PY
+
+      - name: Commit generated content
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/news.json public/data/team.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update generated content [skip content build]"
+            git push
+          fi
