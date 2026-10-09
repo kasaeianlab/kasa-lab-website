@@ -143,3 +143,31 @@
 .team-linkedin:hover {
   text-decoration: underline;
 }
+
+
+/* Consistent paragraph alignment across the website */
+main p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Keep short labels and navigation elements natural */
+.eyebrow,
+.news-date,
+.team-role,
+.small-note,
+.nav a,
+.button,
+.text-link,
+.footer-links,
+.site-footer small {
+  text-align: left;
+}
+
+/* Avoid stretched text in short headings */
+h1,
+h2,
+h3,
+h4 {
+  text-align: left;
+}
