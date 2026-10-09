@@ -235,7 +235,15 @@ async function loadTeamMembers() {
         email.textContent = member.email;
         details.appendChild(email);
       }
-
+      if (member.linkedin) {
+      const linkedin = document.createElement("a");
+      linkedin.className = "team-linkedin";
+      linkedin.href = member.linkedin;
+      linkedin.textContent = "LinkedIn Profile";
+      linkedin.target = "_blank";
+      linkedin.rel = "noopener noreferrer";
+      details.appendChild(linkedin);
+      }
       card.appendChild(details);
       container.appendChild(card);
     });
