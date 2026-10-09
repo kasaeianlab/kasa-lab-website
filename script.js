@@ -1,0 +1,3 @@
+document.getElementById('year')?.replaceChildren(document.createTextNode(new Date().getFullYear()));
+const menuButton=document.querySelector('.menu-toggle');const nav=document.querySelector('.nav');if(menuButton&&nav){menuButton.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));});}
+const contactForm=document.getElementById('contact-form');if(contactForm){contactForm.addEventListener('submit',event=>{event.preventDefault();const note=document.getElementById('form-note');note.textContent='This demo form is not connected yet. Configure the form service before publishing the website.';note.setAttribute('role','status');});}
