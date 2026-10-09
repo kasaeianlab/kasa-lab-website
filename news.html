@@ -97,9 +97,16 @@
           const summary = document.createElement("p");
           summary.textContent = item.summary || "";
 
-          body.append(date, title, summary);
+
+          const link = document.createElement("a");
+          link.className = "read-more";
+          link.href = "news-article.html?slug=" + encodeURIComponent(item.slug);
+          link.textContent = "Read More →";
+
+          body.append(date, title, summary, link);
           card.appendChild(body);
           list.appendChild(card);
+
         });
 
         status.textContent = "";
