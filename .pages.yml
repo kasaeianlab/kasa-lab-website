@@ -1,0 +1,70 @@
+
+media:
+  - name: images
+    label: Images
+    input: public/images
+    output: /images
+
+content:
+  - name: news
+    label: News
+    type: collection
+    path: content/news
+    filename: "{year}-{month}-{day}-{primary}.md"
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: image
+        label: Cover Image
+        type: image
+        required: false
+      - name: summary
+        label: Summary
+        type: text
+      - name: body
+        label: Article
+        type: rich-text
+
+  - name: team
+    label: Team Members
+    type: collection
+    path: content/team
+    filename: "{primary}.md"
+    fields:
+      - name: name
+        label: Full Name
+        type: string
+        required: true
+      - name: role
+        label: Role
+        type: string
+        required: true
+      - name: photo
+        label: Photo
+        type: image
+      - name: email
+        label: Email
+        type: string
+      - name: bio
+        label: Biography
+        type: rich-text
+
+  - name: pages
+    label: Pages
+    type: collection
+    path: content/pages
+    filename: "{primary}.md"
+    fields:
+      - name: title
+        label: Page Title
+        type: string
+        required: true
+      - name: body
+        label: Content
+        type: rich-text
