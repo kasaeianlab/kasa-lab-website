@@ -129,3 +129,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+.team-linkedin {
+  display: inline-block;
+  margin-top: 8px;
+  margin-left: 12px;
+  color: #0a66c2;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.team-linkedin:hover {
+  text-decoration: underline;
+}
