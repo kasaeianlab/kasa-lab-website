@@ -51,6 +51,9 @@ content:
       - name: email
         label: Email
         type: string
+      - name: linkedin
+        label: LinkedIn Profile
+        type: string
       - name: bio
         label: Biography
         type: rich-text
