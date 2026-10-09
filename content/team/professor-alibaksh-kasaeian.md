@@ -1,5 +1,5 @@
 ---
-name: Professor Alibaksh Kasaeian
+name: Professor Alibakhsh Kasaeian
 role: Lab Head
 photo: /images/تبریک-درخصوص-استاد-تمامی.jpg
 email: alikasa20@gmail.com
