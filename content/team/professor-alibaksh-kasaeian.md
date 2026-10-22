@@ -2,6 +2,7 @@
 name: Professor Alibakhsh Kasaeian
 role: Lab Head
 group: faculty
+order: 1
 linkedin: https://www.linkedin.com/in/alibakhsh-kasaeian-b36386153/
 bio: "Alibakhsh Kasaeian is a Full Professor at the University of Tehran and
   serves as the Head of the KASA Lab. He is consistently recognized among the
