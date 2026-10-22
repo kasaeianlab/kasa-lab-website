@@ -8,7 +8,9 @@
   <meta name="robots" content="index, follow">
   <title>Submit a Project | KASA Lab</title>
   <link rel="stylesheet" href="styles.css">
+
   <style>
+    /* Project form layout */
     .project-form-section {
       max-width: 900px;
       margin: 0 auto;
@@ -159,6 +161,120 @@
       overflow: hidden !important;
     }
 
+    /* Header layout fixes */
+    .site-header {
+      width: 100%;
+    }
+
+    .site-header .container {
+      width: min(100% - 40px, 1180px);
+      max-width: 1180px;
+      margin-inline: auto;
+    }
+
+    .site-header .header-inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .site-header .brand {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      flex: 0 1 auto;
+      min-width: 0;
+      text-decoration: none;
+    }
+
+    .site-header .brand img {
+      display: block;
+      width: 180px;
+      max-width: 40vw;
+      height: auto;
+      object-fit: contain;
+      flex: 0 1 auto;
+    }
+
+    .site-header .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 210px;
+      min-width: 0;
+      line-height: 1.4;
+    }
+
+    .site-header .brand-text strong {
+      white-space: nowrap;
+    }
+
+    .site-header .brand-text span {
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .site-header .main-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-left: auto;
+    }
+
+    .site-header .main-nav a {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 760px) {
+      .site-header .header-inner {
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .site-header .brand img {
+        width: 140px;
+        max-width: 38vw;
+      }
+
+      .site-header .brand-text {
+        max-width: 180px;
+      }
+
+      .site-header .main-nav {
+        justify-content: center;
+        margin-left: 0;
+        gap: 12px 16px;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .site-header .brand {
+        gap: 10px;
+      }
+
+      .site-header .brand img {
+        width: 115px;
+      }
+
+      .site-header .brand-text {
+        max-width: 150px;
+      }
+
+      .site-header .brand-text span {
+        font-size: 0.78rem;
+      }
+    }
+
     @media (max-width: 640px) {
       .project-form-section {
         padding: 32px 16px 48px;
@@ -213,8 +329,8 @@
         </p>
       </div>
 
-      <div id="form-status" class="form-status" role="status"
-           aria-live="polite" hidden></div>
+      <div id="form-status" class="form-status"
+           role="status" aria-live="polite" hidden></div>
 
       <form id="project-form" class="project-form"
             action="/api/projects" method="post"
@@ -228,6 +344,7 @@
 
         <fieldset class="form-section">
           <legend>1. Contact information</legend>
+
           <div class="form-grid">
             <div class="form-field">
               <label for="name">
@@ -275,6 +392,7 @@
 
         <fieldset class="form-section">
           <legend>2. Project details</legend>
+
           <div class="form-grid">
             <div class="form-field full-width">
               <label for="project_title">
@@ -348,28 +466,12 @@
                 <option value="Flexible">Flexible</option>
               </select>
             </div>
-
-            <div class="form-field">
-              <label for="budget_range">Indicative budget</label>
-              <select id="budget_range" name="budget_range">
-                <option value="">Prefer not to say / undecided</option>
-                <option value="Under 1000">Under 1,000</option>
-                <option value="1000–5000">1,000–5,000</option>
-                <option value="5000–15000">5,000–15,000</option>
-                <option value="15000–50000">15,000–50,000</option>
-                <option value="Over 50000">Over 50,000</option>
-                <option value="To be discussed">To be discussed</option>
-              </select>
-              <span class="form-help">
-                Please specify the currency in your project description if
-                you provide a budget.
-              </span>
-            </div>
           </div>
         </fieldset>
 
         <fieldset class="form-section">
           <legend>3. Supporting files</legend>
+
           <div class="form-grid">
             <div class="form-field full-width">
               <label for="files">Upload relevant files (optional)</label>
@@ -445,7 +547,10 @@
         statusBox.appendChild(paragraph);
 
         statusBox.hidden = false;
-        statusBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        statusBox.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
       }
 
       function getExtension(filename) {
@@ -499,7 +604,11 @@
           return;
         }
 
-        const totalBytes = files.reduce((sum, file) => sum + file.size, 0);
+        const totalBytes = files.reduce(
+          (sum, file) => sum + file.size,
+          0
+        );
+
         const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
 
         fileSummary.textContent =
@@ -576,10 +685,13 @@
 
           copyButton.addEventListener("click", async () => {
             try {
-              await navigator.clipboard.writeText(trackingCode.textContent);
+              await navigator.clipboard.writeText(
+                trackingCode.textContent
+              );
               copyButton.textContent = "Copied";
             } catch {
-              copyButton.textContent = "Select and copy the code above";
+              copyButton.textContent =
+                "Select and copy the code above";
             }
           });
 
@@ -600,7 +712,10 @@
           }
 
           statusBox.hidden = false;
-          statusBox.scrollIntoView({ behavior: "smooth", block: "center" });
+          statusBox.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
         } catch (error) {
           showStatus(
             error instanceof Error
