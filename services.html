@@ -1,0 +1,802 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="description"
+    content="Explore KASA Lab's engineering simulation, thermal engineering, CFD, multiphysics, research and development, scientific data analysis, and technical consulting services."
+  >
+
+  <meta name="theme-color" content="#ffffff">
+  <title>Our Services | KASA Lab</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Services page-specific styles */
+
+    .services-intro {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .services-intro .eyebrow {
+      text-align: center;
+    }
+
+    .services-intro h2 {
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .services-intro > p:last-child {
+      max-width: 720px;
+      margin: 0 auto;
+      color: var(--muted);
+      line-height: 1.85;
+      text-align: center;
+    }
+
+    .services-overview {
+      padding-bottom: 35px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 38px;
+    }
+
+    .service-detail-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 18px rgba(16, 41, 74, 0.035);
+      transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+    }
+
+    .service-detail-card:hover {
+      transform: translateY(-4px);
+      border-color: #c7dcf2;
+      box-shadow: 0 14px 32px rgba(16, 41, 74, 0.08);
+    }
+
+    .service-detail-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      margin-bottom: 22px;
+      border-radius: 14px;
+      background: var(--sky);
+      color: var(--blue);
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+
+    .service-detail-card h2 {
+      width: 100%;
+      margin: 0 0 14px;
+      font-family: Manrope, sans-serif;
+      font-size: 23px;
+      line-height: 1.35;
+      letter-spacing: -0.5px;
+      color: var(--navy);
+      text-align: left;
+      text-wrap: balance;
+    }
+
+    .service-detail-card > p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+      text-align: left;
+    }
+
+    .service-detail-card h3 {
+      margin: 0 0 10px;
+      color: var(--navy);
+      font-family: Manrope, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .service-detail-card ul {
+      width: 100%;
+      margin: 0 0 22px;
+      padding-left: 20px;
+      color: #526174;
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .service-detail-card li {
+      padding-left: 3px;
+      margin-bottom: 5px;
+    }
+
+    .service-detail-card .text-link {
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .service-audience {
+      background: #f8fafc;
+      max-width: none;
+      padding-left: max(24px, calc((100% - var(--max)) / 2));
+      padding-right: max(24px, calc((100% - var(--max)) / 2));
+    }
+
+    .service-audience-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .service-audience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .audience-card {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .audience-card h3 {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-family: Manrope, sans-serif;
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .audience-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.85;
+    }
+
+    .deliverables-section {
+      border-bottom: 1px solid #edf1f6;
+    }
+
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .deliverable-item {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .deliverable-item strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--navy);
+      font-family: Manrope, sans-serif;
+      font-size: 15px;
+    }
+
+    .deliverable-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .services-process {
+      padding-top: 65px;
+    }
+
+    .services-process .focus-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .services-process .focus-card {
+      padding: 26px 20px;
+    }
+
+    .services-process .focus-icon {
+      font-family: Manrope, sans-serif;
+      font-weight: 800;
+      font-size: 21px;
+    }
+
+    .services-final-cta {
+      margin-top: 0;
+    }
+
+    @media (max-width: 900px) {
+      .services-process .focus-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .deliverables-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .services-grid,
+      .service-audience-grid,
+      .deliverables-grid,
+      .services-process .focus-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-detail-card {
+        padding: 25px 22px;
+      }
+
+      .service-detail-card h2 {
+        font-size: 21px;
+      }
+
+      .service-audience {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .audience-card {
+        padding: 24px 22px;
+      }
+
+      .services-intro {
+        text-align: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .service-detail-card {
+        transition: none;
+      }
+
+      .service-detail-card:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="KASA Lab Home">
+    <img
+      src="kasa-logo.png"
+      alt="KASA Lab logo"
+      class="brand-logo"
+    >
+    <span class="brand-tagline">
+      Knowledge-based Advanced Solutions Association
+    </span>
+  </a>
+
+  <button
+    class="menu-toggle"
+    aria-label="Toggle navigation"
+    aria-expanded="false"
+    aria-controls="main-navigation"
+    type="button"
+  >
+    ☰
+  </button>
+
+  <nav class="nav" id="main-navigation">
+    <a href="index.html">Home</a>
+    <a class="active" href="services.html" aria-current="page">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="news.html">News</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+
+<main>
+
+  <!-- Page introduction -->
+  <section class="page-hero">
+    <p class="eyebrow blue">OUR SERVICES</p>
+
+    <h1>
+      Engineering Expertise.<br>
+      <span>Research-Driven Solutions.</span>
+    </h1>
+
+    <p>
+      KASA Lab supports companies, engineering teams, researchers, and
+      academic institutions with computational modelling, engineering
+      analysis, scientific data processing, and tailored research and
+      development services.
+    </p>
+
+    <div class="hero-actions" style="margin-top: 26px;">
+      <a class="button button-primary" href="contact.html">
+        Discuss Your Project <span>→</span>
+      </a>
+
+      <a class="button" href="#service-list"
+         style="border-color: var(--line); color: var(--navy);">
+        Explore Services
+      </a>
+    </div>
+  </section>
+
+
+  <!-- Services overview -->
+  <section class="section services-overview" id="service-list">
+
+    <div class="services-intro">
+      <p class="eyebrow blue">WHAT WE CAN HELP WITH</p>
+
+      <h2>Technical Support Tailored to Your Challenge</h2>
+
+      <p>
+        Every project has its own objectives, constraints, and technical
+        requirements. We identify appropriate methods and define the scope
+        of work around the specific problem, available information, and
+        intended outcomes.
+      </p>
+    </div>
+
+
+    <div class="services-grid">
+
+      <!-- Service 1 -->
+      <article class="service-detail-card">
+        <span class="service-detail-icon" aria-hidden="true">⌘</span>
+
+        <h2>Engineering Simulation & Computational Modelling</h2>
+
+        <p>
+          Computational models can help investigate engineering systems,
+          compare design alternatives, and understand how a system may
+          behave under specified operating conditions.
+        </p>
+
+        <h3>Potential project activities</h3>
+
+        <ul>
+          <li>Development and implementation of computational models</li>
+          <li>Numerical simulation of engineering systems</li>
+          <li>Parametric studies and comparison of design alternatives</li>
+          <li>Model verification and comparison with available data</li>
+        </ul>
+
+        <h3>Possible deliverables</h3>
+
+        <p>
+          Simulation results, model documentation, technical plots,
+          comparative analyses, and reports agreed upon for the project.
+        </p>
+
+        <a class="text-link" href="contact.html">
+          Discuss a simulation project →
+        </a>
+      </article>
+
+
+      <!-- Service 2 -->
+      <article class="service-detail-card">
+        <span class="service-detail-icon" aria-hidden="true">♨</span>
+
+        <h2>Thermal Engineering & Heat Transfer</h2>
+
+        <p>
+          Engineering analysis of thermal behaviour, heat transfer, and
+          thermal management in systems where temperature distribution
+          and energy transport are important.
+        </p>
+
+        <h3>Potential project activities</h3>
+
+        <ul>
+          <li>Conduction, convection, and thermal transport analysis</li>
+          <li>Thermal management studies for engineering components</li>
+          <li>Temperature-field and heat-transfer investigations</li>
+          <li>Assessment of cooling concepts and operating conditions</li>
+        </ul>
+
+        <h3>Possible deliverables</h3>
+
+        <p>
+          Temperature and heat-transfer analyses, comparisons of thermal
+          designs, simulation outputs, and technical recommendations
+          within the agreed scope.
+        </p>
+
+        <a class="text-link" href="contact.html">
+          Discuss a thermal engineering project →
+        </a>
+      </article>
+
+
+      <!-- Service 3 -->
+      <article class="service-detail-card">
+        <span class="service-detail-icon" aria-hidden="true">≈</span>
+
+        <h2>CFD & Multiphysics</h2>
+
+        <p>
+          Computational fluid dynamics and coupled-physics modelling
+          for problems involving fluid flow, heat transfer, mass transport,
+          and interactions between physical processes.
+        </p>
+
+        <h3>Potential project activities</h3>
+
+        <ul>
+          <li>Fluid-flow and pressure-drop analysis</li>
+          <li>Conjugate heat-transfer investigations</li>
+          <li>Coupled thermal and fluid-flow modelling</li>
+          <li>Evaluation of boundary conditions and model assumptions</li>
+        </ul>
+
+        <h3>Possible deliverables</h3>
+
+        <p>
+          Flow-field visualisations, pressure and temperature distributions,
+          comparative simulation results, and documented modelling methods.
+        </p>
+
+        <a class="text-link" href="contact.html">
+          Discuss a CFD project →
+        </a>
+      </article>
+
+
+      <!-- Service 4 -->
+      <article class="service-detail-card">
+        <span class="service-detail-icon" aria-hidden="true">⚙</span>
+
+        <h2>Research & Development</h2>
+
+        <p>
+          Technical investigation and method development for new concepts,
+          unresolved engineering questions, and projects requiring a
+          structured research approach.
+        </p>
+
+        <h3>Potential project activities</h3>
+
+        <ul>
+          <li>Problem formulation and technical literature review</li>
+          <li>Development or adaptation of computational methods</li>
+          <li>Investigation of concepts and alternative approaches</li>
+          <li>Research support for engineering development activities</li>
+        </ul>
+
+        <h3>Possible deliverables</h3>
+
+        <p>
+          Technical reports, documented methods, research findings,
+          model prototypes, and agreed project outputs.
+        </p>
+
+        <a class="text-link" href="contact.html">
+          Discuss an R&amp;D project →
+        </a>
+      </article>
+
+
+      <!-- Service 5 -->
+      <article class="service-detail-card">
+        <span class="service-detail-icon" aria-hidden="true">▥</span>
+
+        <h2>Scientific Data Analysis</h2>
+
+        <p>
+          Structured analysis of experimental, numerical, or other
+          scientific datasets to identify patterns, compare results,
+          and support evidence-based interpretation.
+        </p>
+
+        <h3>Potential project activities</h3>
+
+        <ul>
+          <li>Data cleaning, processing, and visualisation</li>
+          <li>Statistical and quantitative analysis</li>
+          <li>Comparison of experimental and simulated results</li>
+          <li>Data-driven modelling and exploratory analysis</li>
+        </ul>
+
+        <h3>Possible deliverables</h3>
+
+        <p>
+          Processed datasets, plots, statistical summaries, analysis
+          scripts where agreed, and clear documentation of findings.
+        </p>
+
+        <a class="text-link" href="contact.html">
+          Discuss a data analysis project →
+        </a>
+      </article>
+
+
+      <!-- Service 6 -->
+      <article class="service-detail-card">
+        <span class="service-detail-icon" aria-hidden="true">◎</span>
+
+        <h2>Technical Consulting & Feasibility Studies</h2>
+
+        <p>
+          Structured technical assessment to help determine whether
+          an engineering concept or proposed approach is suitable for
+          further investigation or development.
+        </p>
+
+        <h3>Potential project activities</h3>
+
+        <ul>
+          <li>Initial technical assessment and problem definition</li>
+          <li>Comparison of possible engineering approaches</li>
+          <li>Review of assumptions, constraints, and available data</li>
+          <li>Preliminary feasibility and sensitivity assessments</li>
+        </ul>
+
+        <h3>Possible deliverables</h3>
+
+        <p>
+          Feasibility reports, technical comparisons, documented
+          assumptions, risk considerations, and recommendations
+          appropriate to the agreed scope.
+        </p>
+
+        <a class="text-link" href="contact.html">
+          Discuss a consulting project →
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- Intended audiences -->
+  <section class="section service-audience">
+    <div class="service-audience-inner">
+
+      <div class="services-intro">
+        <p class="eyebrow blue">WHO WE WORK WITH</p>
+
+        <h2>Supporting Industry and Academia</h2>
+
+        <p>
+          We consider enquiries from different sectors and research
+          environments. The proposed approach depends on the technical
+          challenge, project requirements, and available expertise.
+        </p>
+      </div>
+
+      <div class="service-audience-grid">
+
+        <article class="audience-card">
+          <h3>Industry & Engineering Teams</h3>
+
+          <p>
+            Companies and engineering teams can approach KASA Lab for
+            technical modelling, simulation-based investigations, design
+            comparisons, feasibility assessments, and focused R&amp;D support.
+            Project objectives, scope, timeline, deliverables, and commercial
+            terms can be discussed before work begins.
+          </p>
+        </article>
+
+        <article class="audience-card">
+          <h3>Universities & Research Institutions</h3>
+
+          <p>
+            Researchers and academic institutions can enquire about
+            computational modelling, scientific data analysis, numerical
+            investigations, research-method development, and technical
+            support for specific research activities.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Possible deliverables -->
+  <section class="section deliverables-section">
+
+    <div class="services-intro">
+      <p class="eyebrow blue">PROJECT OUTPUTS</p>
+
+      <h2>Clear, Agreed Deliverables</h2>
+
+      <p>
+        Deliverables are defined for each project according to its scope,
+        technical requirements, available inputs, and intended use.
+        Depending on the project, outputs may include:
+      </p>
+    </div>
+
+    <div class="deliverables-grid">
+
+      <article class="deliverable-item">
+        <strong>Technical Reports</strong>
+        <p>
+          Documented methods, assumptions, results, limitations,
+          and technical interpretation.
+        </p>
+      </article>
+
+      <article class="deliverable-item">
+        <strong>Simulation Results</strong>
+        <p>
+          Numerical results, visualisations, parameter comparisons,
+          and relevant model outputs.
+        </p>
+      </article>
+
+      <article class="deliverable-item">
+        <strong>Data Analysis</strong>
+        <p>
+          Processed data, statistical summaries, visualisations,
+          and interpretation of results.
+        </p>
+      </article>
+
+      <article class="deliverable-item">
+        <strong>Computational Models</strong>
+        <p>
+          Model files, implementation details, or reproducible workflows
+          when included in the agreed scope.
+        </p>
+      </article>
+
+      <article class="deliverable-item">
+        <strong>Feasibility Assessments</strong>
+        <p>
+          Technical comparisons, key constraints, and findings to support
+          informed decisions.
+        </p>
+      </article>
+
+      <article class="deliverable-item">
+        <strong>Research Documentation</strong>
+        <p>
+          Methods, analysis procedures, and technical findings prepared
+          for the intended project purpose.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- How we work -->
+  <section class="section services-process">
+
+    <div class="services-intro">
+      <p class="eyebrow blue">HOW WE WORK</p>
+
+      <h2>From Initial Enquiry to Project Delivery</h2>
+
+      <p>
+        We aim to establish a clear understanding of each project before
+        work begins, so that the proposed scope and deliverables reflect
+        the actual technical need.
+      </p>
+    </div>
+
+    <div class="focus-grid">
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">01</span>
+
+        <h3>Submit Your Enquiry</h3>
+
+        <p>
+          Describe your problem, objectives, available information,
+          and the support you are seeking.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">02</span>
+
+        <h3>Technical Review</h3>
+
+        <p>
+          We review the request and consider suitable methods,
+          information requirements, and project fit.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">03</span>
+
+        <h3>Scope & Proposal</h3>
+
+        <p>
+          If the project is suitable, the scope, deliverables, timeline,
+          and commercial terms are discussed before proceeding.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">04</span>
+
+        <h3>Project Execution</h3>
+
+        <p>
+          Work is carried out according to the agreed scope, followed
+          by delivery of the specified outputs.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- Final call to action -->
+  <section class="cta-band services-final-cta">
+    <div>
+      <p class="eyebrow">HAVE A PROJECT IN MIND?</p>
+
+      <h2>Let's Discuss Your Engineering or Research Challenge.</h2>
+
+      <p>
+        Tell us what you are trying to achieve and what technical
+        support you need. We can then discuss whether KASA Lab is
+        a suitable fit for your project.
+      </p>
+    </div>
+
+    <a class="button button-light" href="contact.html">
+      Contact KASA Lab →
+    </a>
+  </section>
+
+</main>
+
+
+<footer class="site-footer">
+  <a class="footer-brand" href="index.html">KASA Lab</a>
+
+  <p>Knowledge-based Advanced Solutions Association</p>
+
+  <div class="footer-links">
+    <a href="services.html">Services</a>
+    <a href="about.html">About Us</a>
+    <a href="news.html">News</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
+  <small>
+    © <span id="year"></span> KASA Lab. All rights reserved.
+  </small>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
