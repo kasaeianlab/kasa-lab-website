@@ -3,85 +3,324 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="KASA Lab — Knowledge-based Advanced Solutions Association. Research, simulation and engineering.">
-  <title>KASA Lab | Research, Simulation & Engineering</title>
+
+  <meta
+    name="description"
+    content="KASA Lab provides engineering simulation, computational modelling, thermal engineering, CFD, scientific data analysis, and tailored R&D solutions for industry and academia."
+  >
+
+  <meta name="theme-color" content="#ffffff">
+  <title>KASA Lab | Engineering, Simulation & Research Solutions</title>
+
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
 <header class="site-header">
   <a class="brand" href="index.html" aria-label="KASA Lab Home">
-  <img
-    src="kasa-logo.png"
-    alt="KASA Lab logo"
-    class="brand-logo"
-  >
-  <span class="brand-tagline">
-    Knowledge-based Advanced Solutions Association
-  </span>
+    <img
+      src="kasa-logo.png"
+      alt="KASA Lab logo"
+      class="brand-logo"
+    >
+    <span class="brand-tagline">
+      Knowledge-based Advanced Solutions Association
+    </span>
   </a>
-  <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-  <nav class="nav">
-    <a class="active" href="index.html">Home</a>
+
+  <button
+    class="menu-toggle"
+    aria-label="Toggle navigation"
+    aria-expanded="false"
+    aria-controls="main-navigation"
+    type="button"
+  >
+    ☰
+  </button>
+
+  <nav class="nav" id="main-navigation">
+    <a class="active" href="index.html" aria-current="page">Home</a>
+    <a href="services.html">Services</a>
     <a href="about.html">About Us</a>
     <a href="news.html">News</a>
-    <a href="contact.html">Contact Us</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </header>
 
 <main>
+
+  <!-- Hero -->
   <section class="hero">
     <div class="hero-shade"></div>
+
     <div class="hero-content">
-      <p class="eyebrow">RESEARCH · SIMULATION · ENGINEERING</p>
-      <h1>Knowledge into<br><span>real-world solutions.</span></h1>
-      <p class="hero-copy">KASA Lab develops knowledge-driven solutions to complex challenges in energy, water, and advanced engineering systems.</p>
+      <p class="eyebrow">
+        ENGINEERING · SIMULATION · RESEARCH
+      </p>
+
+      <h1>
+        Engineering and Research<br>
+        <span>Solutions for Complex Challenges.</span>
+      </h1>
+
+      <p class="hero-copy">
+        KASA Lab works with industry, researchers, and academic institutions
+        to address engineering and scientific challenges through computational
+        modelling, simulation, data analysis, and tailored research solutions.
+      </p>
+
       <div class="hero-actions">
-        <a class="button button-primary" href="about.html">Discover KASA Lab <span>→</span></a>
-        <a class="button button-outline" href="news.html">Latest news</a>
+        <a class="button button-primary" href="services.html">
+          Explore Our Services <span>→</span>
+        </a>
+
+        <a class="button button-outline" href="contact.html">
+          Submit a Project
+        </a>
       </div>
     </div>
-    <div class="hero-note">Research. Model. Solve.</div>
+
+    <div class="hero-note">
+      Analyse. Model. Solve.
+    </div>
   </section>
 
+
+  <!-- Introduction -->
   <section class="section focus-section">
     <div class="section-heading">
       <p class="eyebrow blue">WHAT WE DO</p>
-      <h2>Research with practical impact</h2>
-      <p>We bring together scientific research, computational modeling, numerical simulation, programming, artificial intelligence, optimization, and experimental approaches.</p>
+
+      <h2>From Complex Problems to Practical Solutions</h2>
+
+      <p>
+        Engineering and research challenges often require more than a single
+        method or discipline. We bring together computational modelling,
+        engineering analysis, scientific data processing, and research
+        expertise to help turn complex questions into technically grounded
+        solutions.
+      </p>
     </div>
 
     <div class="focus-grid">
+
       <article class="focus-card">
-        <span class="focus-icon">☼</span>
-        <h3>Energy & Renewables</h3>
-        <p>Renewable energy, solar systems, photovoltaic technologies, and energy-system analysis.</p>
+        <span class="focus-icon" aria-hidden="true">⌘</span>
+
+        <h3>Engineering Simulation</h3>
+
+        <p>
+          Computational modelling and numerical simulation to investigate
+          system behaviour, evaluate design options, and support
+          engineering decisions.
+        </p>
       </article>
+
       <article class="focus-card">
-        <span class="focus-icon">≈</span>
-        <h3>Fluid Mechanics</h3>
-        <p>Fluid-flow analysis, computational studies, and advanced numerical simulation.</p>
+        <span class="focus-icon" aria-hidden="true">♨</span>
+
+        <h3>Thermal Engineering</h3>
+
+        <p>
+          Heat transfer, thermal management, energy transport, and
+          thermofluid analysis for engineering systems and applications.
+        </p>
       </article>
+
       <article class="focus-card">
-        <span class="focus-icon">◉</span>
-        <h3>Water & Environment</h3>
-        <p>Water treatment, desalination, photocatalysis, and sustainable engineering solutions.</p>
+        <span class="focus-icon" aria-hidden="true">≈</span>
+
+        <h3>CFD & Multiphysics</h3>
+
+        <p>
+          Computational fluid dynamics and coupled-physics modelling
+          to explore flow, transport phenomena, and interacting physical
+          processes.
+        </p>
       </article>
+
       <article class="focus-card">
-        <span class="focus-icon">⌘</span>
-        <h3>AI & Optimization</h3>
-        <p>Machine learning, data-driven modeling, optimization, and technology development.</p>
+        <span class="focus-icon" aria-hidden="true">⚙</span>
+
+        <h3>Research & Development</h3>
+
+        <p>
+          Technical investigation, model development, method evaluation,
+          and tailored R&D support for new ideas and challenging problems.
+        </p>
       </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">▥</span>
+
+        <h3>Scientific Data Analysis</h3>
+
+        <p>
+          Data processing, quantitative analysis, visualisation, and
+          data-driven modelling to extract meaningful insights from
+          scientific and engineering data.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">◎</span>
+
+        <h3>Technical Consulting</h3>
+
+        <p>
+          Feasibility studies, technical assessments, comparison of
+          alternative solutions, and evidence-based support for project
+          planning and decision-making.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="section-action">
+      <a class="text-link" href="services.html">
+        Explore all services →
+      </a>
     </div>
   </section>
 
+
+  <!-- Collaboration -->
+  <section class="section collaboration-section">
+    <div class="section-heading">
+      <p class="eyebrow blue">WHO WE WORK WITH</p>
+
+      <h2>A Collaborative Approach to Every Project</h2>
+
+      <p>
+        We welcome project enquiries from companies, engineering teams,
+        researchers, universities, and research institutions. Depending on
+        the problem, a project may involve focused technical analysis,
+        computational modelling, research support, or collaboration with
+        relevant specialists.
+      </p>
+    </div>
+
+    <div class="focus-grid">
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">▦</span>
+
+        <h3>Industry & Engineering Teams</h3>
+
+        <p>
+          Investigate technical problems, assess design alternatives,
+          and support development with simulation and engineering analysis.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">⌂</span>
+
+        <h3>Universities & Research Institutions</h3>
+
+        <p>
+          Support research activities through modelling, data analysis,
+          numerical investigation, and specialised technical work.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">↗</span>
+
+        <h3>Interdisciplinary Projects</h3>
+
+        <p>
+          Explore challenges that require complementary expertise,
+          combining appropriate methods and collaborating with relevant
+          researchers and specialists when needed.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- How We Work -->
+  <section class="section process-section">
+    <div class="section-heading">
+      <p class="eyebrow blue">HOW WE WORK</p>
+
+      <h2>A Clear Process from Enquiry to Delivery</h2>
+
+      <p>
+        Each project begins with understanding the problem, defining the
+        technical scope, and agreeing on the expected outcomes.
+      </p>
+    </div>
+
+    <div class="focus-grid">
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">01</span>
+
+        <h3>Submit Your Project</h3>
+
+        <p>
+          Tell us about your challenge, objectives, available information,
+          and the support you are looking for.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">02</span>
+
+        <h3>Technical Review</h3>
+
+        <p>
+          We review the request to understand the problem, identify
+          relevant methods, and assess the information available.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">03</span>
+
+        <h3>Scope & Proposal</h3>
+
+        <p>
+          Where the project is a suitable fit, we discuss the scope,
+          deliverables, timeline, and commercial terms before work begins.
+        </p>
+      </article>
+
+      <article class="focus-card">
+        <span class="focus-icon" aria-hidden="true">04</span>
+
+        <h3>Project Execution</h3>
+
+        <p>
+          Work proceeds according to the agreed scope, with technical
+          communication and delivery of the specified outputs.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="section-action">
+      <a class="button button-primary" href="contact.html">
+        Discuss Your Project <span>→</span>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- Latest News -->
   <section class="section news-section">
     <div class="section-title-row">
       <div>
         <p class="eyebrow blue">FROM THE LAB</p>
-        <h2>Latest news</h2>
+        <h2>Latest News & Updates</h2>
       </div>
-      <a class="text-link" href="news.html">All news →</a>
+
+      <a class="text-link" href="news.html">
+        All news →
+      </a>
     </div>
 
     <div class="news-grid" id="home-news">
@@ -89,31 +328,55 @@
     </div>
   </section>
 
+
+  <!-- Final Call to Action -->
   <section class="cta-band">
     <div>
-      <p class="eyebrow">KASA LAB</p>
-      <h2>Turning research into practical solutions.</h2>
+      <p class="eyebrow">HAVE A PROJECT IN MIND?</p>
+
+      <h2>Let's Work on Your Engineering or Research Challenge.</h2>
+
+      <p>
+        Share your objectives with us to start a conversation about
+        your project.
+      </p>
     </div>
-    <a class="button button-light" href="contact.html">Get in touch →</a>
+
+    <a class="button button-light" href="contact.html">
+      Submit a Project →
+    </a>
   </section>
+
 </main>
+
 
 <footer class="site-footer">
   <a class="footer-brand" href="index.html">KASA Lab</a>
-  <p>Knowledge-based Advanced Solutions Association</p>
+
+  <p>
+    Knowledge-based Advanced Solutions Association
+  </p>
+
   <div class="footer-links">
+    <a href="services.html">Services</a>
     <a href="about.html">About Us</a>
     <a href="news.html">News</a>
     <a href="contact.html">Contact</a>
   </div>
-  <small>© <span id="year"></span> KASA Lab. All rights reserved.</small>
+
+  <small>
+    © <span id="year"></span> KASA Lab. All rights reserved.
+  </small>
 </footer>
+
 
 <script src="script.js"></script>
 
 <script>
   async function loadHomeNews() {
     const container = document.getElementById("home-news");
+
+    if (!container) return;
 
     try {
       const response = await fetch("public/data/news.json");
@@ -123,23 +386,45 @@
       }
 
       const news = await response.json();
-      container.replaceChildren();
 
       if (!Array.isArray(news) || news.length === 0) {
-        container.innerHTML = '<p class="small-note">New research updates will appear here soon.</p>';
+        container.replaceChildren();
+
+        const emptyMessage = document.createElement("p");
+        emptyMessage.className = "small-note";
+        emptyMessage.textContent =
+          "New research and project updates will appear here soon.";
+
+        container.appendChild(emptyMessage);
         return;
       }
 
-      news.slice(0, 3).forEach(item => {
+      const sortedNews = [...news].sort((a, b) => {
+        const dateA = Date.parse(a.date || "") || 0;
+        const dateB = Date.parse(b.date || "") || 0;
+
+        return dateB - dateA;
+      });
+
+      container.replaceChildren();
+
+      sortedNews.slice(0, 3).forEach(item => {
         const card = document.createElement("article");
         card.className = "news-card";
 
         if (item.image) {
           const image = document.createElement("div");
           image.className = "news-image";
-          image.style.backgroundImage = `url("${item.image}")`;
+          image.style.backgroundImage =
+            `url("${String(item.image).replace(/["\\]/g, "")}")`;
           image.style.backgroundSize = "cover";
           image.style.backgroundPosition = "center";
+          image.setAttribute("role", "img");
+          image.setAttribute(
+            "aria-label",
+            item.title ? `Image for ${item.title}` : "News image"
+          );
+
           card.appendChild(image);
         }
 
@@ -158,15 +443,31 @@
 
         const link = document.createElement("a");
         link.className = "text-link";
-        link.href = "news-article.html?slug=" + encodeURIComponent(item.slug);
+        link.href =
+          "news-article.html?slug=" + encodeURIComponent(item.slug || "");
         link.textContent = "Read More →";
 
         body.append(date, title, summary, link);
         card.appendChild(body);
         container.appendChild(card);
       });
+
     } catch (error) {
-      container.innerHTML = '<p class="small-note">News could not be loaded. Please visit the <a href="news.html">News page</a>.</p>';
+      container.replaceChildren();
+
+      const message = document.createElement("p");
+      message.className = "small-note";
+      message.append("News could not be loaded. Please visit the ");
+
+      const link = document.createElement("a");
+      link.href = "news.html";
+      link.textContent = "News page";
+
+      message.appendChild(link);
+      message.append(".");
+
+      container.appendChild(message);
+
       console.error("Error loading homepage news:", error);
     }
   }
@@ -176,4 +477,3 @@
 
 </body>
 </html>
-```
