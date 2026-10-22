@@ -3,6 +3,7 @@ name: Kambiz Divsalar
 role: M.Sc. Researcher
 group: researchers
 order: 1
+photo: /public/images/KambizPic.jpg
 linkedin: https://www.linkedin.com/in/kambizdivsalar/
 bio: Kambiz is a master of science researcher with a strong academic background
   in fluid mechanics, heat transfer, and energy systems. His research interests
