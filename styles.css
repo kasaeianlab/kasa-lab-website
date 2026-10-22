@@ -1350,3 +1350,10 @@ main p {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Justify team member biographies */
+.team-card .team-bio {
+  text-align: justify;
+  text-justify: inter-word;
+  line-height: 1.8;
+}
