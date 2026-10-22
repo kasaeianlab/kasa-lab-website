@@ -1,23 +1,6 @@
 
-const MAX_FILES = 5;
-const MAX_FILE_SIZE = 8 * 1024 * 1024;
-const MAX_TOTAL_SIZE = 20 * 1024 * 1024;
 const RATE_LIMIT = 3;
 const RATE_WINDOW_SECONDS = 60 * 60;
-
-const ALLOWED_EXTENSIONS = new Set([
-  "pdf",
-  "doc",
-  "docx",
-  "xls",
-  "xlsx",
-  "csv",
-  "txt",
-  "png",
-  "jpg",
-  "jpeg",
-  "zip"
-]);
 
 const ALLOWED_SERVICES = new Set([
   "engineering-simulation",
@@ -69,25 +52,6 @@ async function sha256Hex(value) {
     .join("");
 }
 
-function getExtension(filename) {
-  const name = filename.split(/[\\/]/).pop() || "";
-  const index = name.lastIndexOf(".");
-
-  if (index <= 0 || index === name.length - 1) return "";
-  return name.slice(index + 1).toLowerCase();
-}
-
-function safeOriginalFilename(filename) {
-  const name = (filename || "file")
-    .split(/[\\/]/)
-    .pop()
-    .replace(/[\u0000-\u001f\u007f]/g, "")
-    .trim()
-    .slice(0, 180);
-
-  return name || "file";
-}
-
 function validEmail(email) {
   return (
     email.length <= 254 &&
@@ -132,14 +96,14 @@ async function checkRateLimit(env, ipHash, now) {
   );
 }
 
-async function sendNotification(env, project, trackingCode, files) {
-  if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL || !env.ADMIN_EMAIL) {
+async function sendNotification(env, project, trackingCode) {
+  if (
+    !env.RESEND_API_KEY ||
+    !env.RESEND_FROM_EMAIL ||
+    !env.ADMIN_EMAIL
+  ) {
     return false;
   }
-
-  const fileList = files.length
-    ? files.map((file) => `- ${file.name} (${file.size} bytes)`).join("\n")
-    : "No files attached.";
 
   const message = [
     "A new project request has been submitted to KASA Lab.",
@@ -154,7 +118,6 @@ async function sendNotification(env, project, trackingCode, files) {
     `Service: ${project.service_type}`,
     `Project title: ${project.project_title}`,
     `Timeline: ${project.timeline || "Not provided"}`,
-    `Budget range: ${project.budget_range || "Not provided"}`,
     "",
     "Description:",
     project.description,
@@ -162,17 +125,14 @@ async function sendNotification(env, project, trackingCode, files) {
     "Expected deliverables:",
     project.expected_deliverables || "Not provided",
     "",
-    "Uploaded files:",
-    fileList,
-    "",
-    "Files are stored privately and are not attached to this email."
+    "No files were uploaded. File uploads are temporarily unavailable."
   ].join("\n");
 
   try {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -193,7 +153,6 @@ async function sendNotification(env, project, trackingCode, files) {
 export async function onRequestPost({ request, env }) {
   if (
     !env.DB ||
-    !env.PROJECT_FILES ||
     !env.TRACKING_HASH_SECRET ||
     !env.RATE_LIMIT_SALT
   ) {
@@ -212,12 +171,14 @@ export async function onRequestPost({ request, env }) {
     }, 415);
   }
 
+  // File uploads are temporarily disabled.
+  // Reject oversized requests before parsing the form.
   const contentLength = Number(request.headers.get("Content-Length") || 0);
 
-  if (contentLength > MAX_TOTAL_SIZE + 1024 * 1024) {
+  if (contentLength > 128 * 1024) {
     return jsonResponse({
       success: false,
-      message: "The submission is too large."
+      message: "The request is too large. Please submit without attachments."
     }, 413);
   }
 
@@ -232,9 +193,12 @@ export async function onRequestPost({ request, env }) {
     }, 400);
   }
 
-  // Honeypot field: ordinary visitors should leave this empty.
+  // Honeypot: ordinary visitors should leave this field empty.
   if (cleanText(form.get("website"), 200)) {
-    return jsonResponse({ success: true, message: "Submission received." });
+    return jsonResponse({
+      success: true,
+      message: "Submission received."
+    });
   }
 
   const name = cleanText(form.get("name"), 150);
@@ -250,7 +214,6 @@ export async function onRequestPost({ request, env }) {
     4000
   );
   const timeline = cleanText(form.get("timeline"), 150);
-  const budgetRange = cleanText(form.get("budget_range"), 150);
 
   if (
     !name ||
@@ -267,58 +230,23 @@ export async function onRequestPost({ request, env }) {
     }, 400);
   }
 
+  // Do not accept attachments until private file storage is configured.
   const submittedFiles = form.getAll("files").filter(
     (item) => item instanceof File && item.size > 0
   );
 
-  if (submittedFiles.length > MAX_FILES) {
+  if (submittedFiles.length > 0) {
     return jsonResponse({
       success: false,
-      message: `You can upload a maximum of ${MAX_FILES} files.`
+      message: "File uploads are temporarily unavailable. Please remove attachments and submit your request again."
     }, 400);
-  }
-
-  let totalSize = 0;
-  const files = [];
-
-  for (const file of submittedFiles) {
-    const originalName = safeOriginalFilename(file.name);
-    const extension = getExtension(originalName);
-
-    if (!ALLOWED_EXTENSIONS.has(extension)) {
-      return jsonResponse({
-        success: false,
-        message: `The file type "${extension || "unknown"}" is not allowed.`
-      }, 400);
-    }
-
-    if (file.size > MAX_FILE_SIZE) {
-      return jsonResponse({
-        success: false,
-        message: `${originalName} exceeds the 8 MB per-file limit.`
-      }, 400);
-    }
-
-    totalSize += file.size;
-
-    if (totalSize > MAX_TOTAL_SIZE) {
-      return jsonResponse({
-        success: false,
-        message: "The combined file size must not exceed 20 MB."
-      }, 400);
-    }
-
-    files.push({
-      file,
-      name: originalName,
-      extension,
-      size: file.size
-    });
   }
 
   const now = Math.floor(Date.now() / 1000);
   const ipAddress = request.headers.get("CF-Connecting-IP") || "unknown";
-  const ipHash = await sha256Hex(`${env.RATE_LIMIT_SALT}:${ipAddress}`);
+  const ipHash = await sha256Hex(
+    `${env.RATE_LIMIT_SALT}:${ipAddress}`
+  );
 
   let allowed;
 
@@ -355,20 +283,30 @@ export async function onRequestPost({ request, env }) {
     service_type: serviceType,
     project_title: projectTitle,
     description,
-    expected_deliverables: expectedDeliverables,
-    timeline,
-    budget_range
+    expected_deliverables,
+    timeline
   };
-
-  const storedKeys = [];
 
   try {
     await env.DB.prepare(`
       INSERT INTO projects (
-        id, tracking_hash, name, email, organization,
-        organization_type, country, service_type, project_title,
-        description, expected_deliverables, timeline, budget_range,
-        status, created_at, updated_at, notification_status
+        id,
+        tracking_hash,
+        name,
+        email,
+        organization,
+        organization_type,
+        country,
+        service_type,
+        project_title,
+        description,
+        expected_deliverables,
+        timeline,
+        budget_range,
+        status,
+        created_at,
+        updated_at,
+        notification_status
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       project.id,
@@ -383,70 +321,20 @@ export async function onRequestPost({ request, env }) {
       project.description,
       project.expected_deliverables || null,
       project.timeline || null,
-      project.budget_range || null,
+      null,
       "Submitted",
       timestamp,
       timestamp,
       "pending"
     ).run();
-
-    for (const item of files) {
-      const fileId = crypto.randomUUID();
-      const storageKey =
-        `project-submissions/${projectId}/${fileId}.${item.extension}`;
-
-      await env.PROJECT_FILES.put(storageKey, item.file.stream(), {
-        httpMetadata: {
-          contentType: "application/octet-stream",
-          contentDisposition: "attachment"
-        },
-        customMetadata: {
-          projectId,
-          fileId
-        }
-      });
-
-      storedKeys.push(storageKey);
-
-      await env.DB.prepare(`
-        INSERT INTO project_files (
-          id, project_id, storage_key, original_name,
-          content_type, size_bytes, uploaded_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?)
-      `).bind(
-        fileId,
-        projectId,
-        storageKey,
-        item.name,
-        "application/octet-stream",
-        item.size,
-        timestamp
-      ).run();
-    }
   } catch {
-    for (const key of storedKeys) {
-      try {
-        await env.PROJECT_FILES.delete(key);
-      } catch {
-        // Keep attempting cleanup for other files.
-      }
-    }
-
-    try {
-      await env.DB.prepare("DELETE FROM projects WHERE id = ?")
-        .bind(projectId)
-        .run();
-    } catch {
-      // The original operation has already failed.
-    }
-
     return jsonResponse({
       success: false,
       message: "We could not save your request. Please try again later."
     }, 500);
   }
 
-  const emailSent = await sendNotification(env, project, trackingCode, files);
+  const emailSent = await sendNotification(env, project, trackingCode);
 
   try {
     await env.DB.prepare(`
@@ -459,7 +347,7 @@ export async function onRequestPost({ request, env }) {
       projectId
     ).run();
   } catch {
-    // The submission is saved even if this status update fails.
+    // The request remains saved even if updating this status fails.
   }
 
   return jsonResponse({
