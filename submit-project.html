@@ -2,15 +2,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Submit a research, engineering, simulation, or thermal management project request to KASA Lab.">
-  <meta name="robots" content="index, follow">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="description"
+    content="Submit a research, engineering, simulation, or thermal management project request to KASA Lab."
+  >
+  <meta name="theme-color" content="#ffffff">
+
   <title>Submit a Project | KASA Lab</title>
+
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    /* Project form layout */
     .project-form-section {
       max-width: 900px;
       margin: 0 auto;
@@ -126,6 +131,8 @@
     }
 
     .form-status {
+      max-width: 860px;
+      margin: 0 auto 24px;
       padding: 16px;
       border-radius: 8px;
       line-height: 1.65;
@@ -161,120 +168,6 @@
       overflow: hidden !important;
     }
 
-    /* Header layout fixes */
-    .site-header {
-      width: 100%;
-    }
-
-    .site-header .container {
-      width: min(100% - 40px, 1180px);
-      max-width: 1180px;
-      margin-inline: auto;
-    }
-
-    .site-header .header-inner {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-
-    .site-header .brand {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 16px;
-      flex: 0 1 auto;
-      min-width: 0;
-      text-decoration: none;
-    }
-
-    .site-header .brand img {
-      display: block;
-      width: 180px;
-      max-width: 40vw;
-      height: auto;
-      object-fit: contain;
-      flex: 0 1 auto;
-    }
-
-    .site-header .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      max-width: 210px;
-      min-width: 0;
-      line-height: 1.4;
-    }
-
-    .site-header .brand-text strong {
-      white-space: nowrap;
-    }
-
-    .site-header .brand-text span {
-      font-size: 0.88rem;
-      line-height: 1.45;
-    }
-
-    .site-header .main-nav {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-left: auto;
-    }
-
-    .site-header .main-nav a {
-      white-space: nowrap;
-    }
-
-    @media (max-width: 760px) {
-      .site-header .header-inner {
-        justify-content: center;
-        gap: 16px;
-      }
-
-      .site-header .brand img {
-        width: 140px;
-        max-width: 38vw;
-      }
-
-      .site-header .brand-text {
-        max-width: 180px;
-      }
-
-      .site-header .main-nav {
-        justify-content: center;
-        margin-left: 0;
-        gap: 12px 16px;
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 420px) {
-      .site-header .brand {
-        gap: 10px;
-      }
-
-      .site-header .brand img {
-        width: 115px;
-      }
-
-      .site-header .brand-text {
-        max-width: 150px;
-      }
-
-      .site-header .brand-text span {
-        font-size: 0.78rem;
-      }
-    }
-
     @media (max-width: 640px) {
       .project-form-section {
         padding: 32px 16px 48px;
@@ -292,7 +185,7 @@
 </head>
 
 <body>
-  
+
 <header class="site-header">
   <a class="brand" href="index.html" aria-label="KASA Lab Home">
     <img
@@ -324,426 +217,501 @@
   </nav>
 </header>
 
+<main>
+  <section class="project-form-section">
 
-  <main>
-    <section class="project-form-section">
-      <div class="project-form-intro">
-        <p class="eyebrow">Work with KASA Lab</p>
-        <h1>Submit a Project Request</h1>
-        <p>
-          Tell us about your research or engineering challenge. KASA Lab
-          welcomes project enquiries from companies, universities, research
-          institutions, and other organisations.
-        </p>
-        <p class="form-help">
-          Please provide enough technical detail for us to understand the
-          problem, expected outcomes, and potential scope of collaboration.
-          Submission does not constitute acceptance of a project.
-        </p>
-      </div>
+    <div class="project-form-intro">
+      <p class="eyebrow">Work with KASA Lab</p>
 
-      <div id="form-status" class="form-status"
-           role="status" aria-live="polite" hidden></div>
+      <h1>Submit a Project Request</h1>
 
-      <form id="project-form" class="project-form"
-            action="/api/projects" method="post"
-            enctype="multipart/form-data">
-
-        <div class="honeypot-field" aria-hidden="true">
-          <label for="website">Leave this field empty</label>
-          <input id="website" name="website" type="text"
-                 tabindex="-1" autocomplete="off">
-        </div>
-
-        <fieldset class="form-section">
-          <legend>1. Contact information</legend>
-
-          <div class="form-grid">
-            <div class="form-field">
-              <label for="name">
-                Full name <span class="required-mark">*</span>
-              </label>
-              <input id="name" name="name" type="text"
-                     maxlength="150" autocomplete="name" required>
-            </div>
-
-            <div class="form-field">
-              <label for="email">
-                Email address <span class="required-mark">*</span>
-              </label>
-              <input id="email" name="email" type="email"
-                     maxlength="254" autocomplete="email" required>
-            </div>
-
-            <div class="form-field">
-              <label for="organization">Organisation</label>
-              <input id="organization" name="organization" type="text"
-                     maxlength="200" autocomplete="organization">
-            </div>
-
-            <div class="form-field">
-              <label for="organization_type">
-                Organisation type <span class="required-mark">*</span>
-              </label>
-              <select id="organization_type" name="organization_type" required>
-                <option value="">Select an option</option>
-                <option value="company">Company / Industry</option>
-                <option value="university">University</option>
-                <option value="research-institution">Research institution</option>
-                <option value="individual">Individual</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label for="country">Country</label>
-              <input id="country" name="country" type="text"
-                     maxlength="100" autocomplete="country-name">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="form-section">
-          <legend>2. Project details</legend>
-
-          <div class="form-grid">
-            <div class="form-field full-width">
-              <label for="project_title">
-                Project title <span class="required-mark">*</span>
-              </label>
-              <input id="project_title" name="project_title" type="text"
-                     maxlength="200" required
-                     placeholder="A short description of your project">
-            </div>
-
-            <div class="form-field full-width">
-              <label for="service_type">
-                Area of support <span class="required-mark">*</span>
-              </label>
-              <select id="service_type" name="service_type" required>
-                <option value="">Select the closest match</option>
-                <option value="engineering-simulation">
-                  Engineering simulation and computational modelling
-                </option>
-                <option value="thermal-engineering">
-                  Thermal engineering and heat transfer
-                </option>
-                <option value="cfd-multiphysics">
-                  CFD and multiphysics modelling
-                </option>
-                <option value="research-development">
-                  Research and development
-                </option>
-                <option value="scientific-data-analysis">
-                  Scientific data analysis
-                </option>
-                <option value="technical-consulting">
-                  Technical consulting and feasibility studies
-                </option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div class="form-field full-width">
-              <label for="description">
-                Project description <span class="required-mark">*</span>
-              </label>
-              <textarea id="description" name="description"
-                        maxlength="10000" required
-                        placeholder="Describe the problem, background, technical requirements, available data, and the main questions you want to address."></textarea>
-              <span class="form-help">
-                Please do not include passwords, confidential personal data,
-                or information you are not authorised to share.
-              </span>
-            </div>
-
-            <div class="form-field full-width">
-              <label for="expected_deliverables">
-                Expected deliverables
-              </label>
-              <textarea id="expected_deliverables"
-                        name="expected_deliverables"
-                        maxlength="4000"
-                        placeholder="For example: simulation results, a technical report, a validated model, data analysis, or recommendations."></textarea>
-            </div>
-
-            <div class="form-field">
-              <label for="timeline">Expected timeline</label>
-              <select id="timeline" name="timeline">
-                <option value="">Not decided yet</option>
-                <option value="Within 2 weeks">Within 2 weeks</option>
-                <option value="2–6 weeks">2–6 weeks</option>
-                <option value="1–3 months">1–3 months</option>
-                <option value="3–6 months">3–6 months</option>
-                <option value="More than 6 months">More than 6 months</option>
-                <option value="Flexible">Flexible</option>
-              </select>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="form-section">
-          <legend>3. Supporting files</legend>
-
-          <div class="form-grid">
-            <div class="form-field full-width">
-              <label for="files">Upload relevant files (optional)</label>
-              <input id="files" name="files" type="file" multiple
-                     accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.png,.jpg,.jpeg,.zip">
-              <span class="form-help">
-                Maximum 5 files; 8 MB per file and 20 MB combined.
-                Supported extensions: PDF, DOC, DOCX, XLS, XLSX, CSV,
-                TXT, PNG, JPG, JPEG, and ZIP.
-              </span>
-              <span id="file-summary" class="form-help">
-                No files selected.
-              </span>
-            </div>
-          </div>
-        </fieldset>
-
-        <p class="form-consent">
-          By submitting this form, you ask KASA Lab to use the information
-          provided to review and respond to your project enquiry. Please
-          ensure you have permission to share all submitted materials.
-          Submission does not create a contract or guarantee that the
-          project will be accepted.
-        </p>
-
-        <div class="form-actions">
-          <button id="submit-button" class="form-submit-button" type="submit">
-            Submit project request
-          </button>
-          <span class="form-help">
-            Fields marked with <span class="required-mark">*</span> are required.
-          </span>
-        </div>
-      </form>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
       <p>
-        © <span id="current-year"></span> KASA Lab.
-        Research, engineering, and scientific collaboration.
+        Tell us about your research or engineering challenge. KASA Lab
+        welcomes project enquiries from companies, universities, research
+        institutions, and other organisations.
+      </p>
+
+      <p class="form-help">
+        Please provide enough technical detail for us to understand the
+        problem, expected outcomes, and potential scope of collaboration.
+        Submission does not constitute acceptance of a project.
       </p>
     </div>
-  </footer>
 
-  <script>
-    (() => {
-      const form = document.getElementById("project-form");
-      const statusBox = document.getElementById("form-status");
-      const submitButton = document.getElementById("submit-button");
-      const fileInput = document.getElementById("files");
-      const fileSummary = document.getElementById("file-summary");
-      const yearElement = document.getElementById("current-year");
+    <div
+      id="form-status"
+      class="form-status"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
 
-      yearElement.textContent = new Date().getFullYear();
+    <form
+      id="project-form"
+      class="project-form"
+      action="/api/projects"
+      method="post"
+      enctype="multipart/form-data"
+    >
 
-      const maxFiles = 5;
-      const maxFileSize = 8 * 1024 * 1024;
-      const maxTotalSize = 20 * 1024 * 1024;
+      <div class="honeypot-field" aria-hidden="true">
+        <label for="website">Leave this field empty</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        >
+      </div>
 
-      const allowedExtensions = new Set([
-        "pdf", "doc", "docx", "xls", "xlsx",
-        "csv", "txt", "png", "jpg", "jpeg", "zip"
-      ]);
+      <fieldset class="form-section">
+        <legend>1. Contact information</legend>
 
-      function showStatus(message, type) {
-        statusBox.className = `form-status ${type}`;
-        statusBox.replaceChildren();
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="name">
+              Full name <span class="required-mark">*</span>
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              maxlength="150"
+              autocomplete="name"
+              required
+            >
+          </div>
 
-        const paragraph = document.createElement("p");
-        paragraph.textContent = message;
-        statusBox.appendChild(paragraph);
+          <div class="form-field">
+            <label for="email">
+              Email address <span class="required-mark">*</span>
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              maxlength="254"
+              autocomplete="email"
+              required
+            >
+          </div>
 
-        statusBox.hidden = false;
-        statusBox.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
+          <div class="form-field">
+            <label for="organization">Organisation</label>
+            <input
+              id="organization"
+              name="organization"
+              type="text"
+              maxlength="200"
+              autocomplete="organization"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="organization_type">
+              Organisation type <span class="required-mark">*</span>
+            </label>
+            <select
+              id="organization_type"
+              name="organization_type"
+              required
+            >
+              <option value="">Select an option</option>
+              <option value="company">Company / Industry</option>
+              <option value="university">University</option>
+              <option value="research-institution">Research institution</option>
+              <option value="individual">Individual</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="country">Country</label>
+            <input
+              id="country"
+              name="country"
+              type="text"
+              maxlength="100"
+              autocomplete="country-name"
+            >
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>2. Project details</legend>
+
+        <div class="form-grid">
+          <div class="form-field full-width">
+            <label for="project_title">
+              Project title <span class="required-mark">*</span>
+            </label>
+            <input
+              id="project_title"
+              name="project_title"
+              type="text"
+              maxlength="200"
+              required
+              placeholder="A short description of your project"
+            >
+          </div>
+
+          <div class="form-field full-width">
+            <label for="service_type">
+              Area of support <span class="required-mark">*</span>
+            </label>
+
+            <select id="service_type" name="service_type" required>
+              <option value="">Select the closest match</option>
+              <option value="engineering-simulation">
+                Engineering simulation and computational modelling
+              </option>
+              <option value="thermal-engineering">
+                Thermal engineering and heat transfer
+              </option>
+              <option value="cfd-multiphysics">
+                CFD and multiphysics modelling
+              </option>
+              <option value="research-development">
+                Research and development
+              </option>
+              <option value="scientific-data-analysis">
+                Scientific data analysis
+              </option>
+              <option value="technical-consulting">
+                Technical consulting and feasibility studies
+              </option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-field full-width">
+            <label for="description">
+              Project description <span class="required-mark">*</span>
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              maxlength="10000"
+              required
+              placeholder="Describe the problem, background, technical requirements, available data, and the main questions you want to address."
+            ></textarea>
+
+            <span class="form-help">
+              Please do not include passwords, confidential personal data,
+              or information you are not authorised to share.
+            </span>
+          </div>
+
+          <div class="form-field full-width">
+            <label for="expected_deliverables">
+              Expected deliverables
+            </label>
+
+            <textarea
+              id="expected_deliverables"
+              name="expected_deliverables"
+              maxlength="4000"
+              placeholder="For example: simulation results, a technical report, a validated model, data analysis, or recommendations."
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="timeline">Expected timeline</label>
+
+            <select id="timeline" name="timeline">
+              <option value="">Not decided yet</option>
+              <option value="Within 2 weeks">Within 2 weeks</option>
+              <option value="2–6 weeks">2–6 weeks</option>
+              <option value="1–3 months">1–3 months</option>
+              <option value="3–6 months">3–6 months</option>
+              <option value="More than 6 months">More than 6 months</option>
+              <option value="Flexible">Flexible</option>
+            </select>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>3. Supporting files</legend>
+
+        <div class="form-grid">
+          <div class="form-field full-width">
+            <label for="files">Upload relevant files (optional)</label>
+
+            <input
+              id="files"
+              name="files"
+              type="file"
+              multiple
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.png,.jpg,.jpeg,.zip"
+            >
+
+            <span class="form-help">
+              Maximum 5 files; 8 MB per file and 20 MB combined.
+              Supported extensions: PDF, DOC, DOCX, XLS, XLSX, CSV,
+              TXT, PNG, JPG, JPEG, and ZIP.
+            </span>
+
+            <span id="file-summary" class="form-help">
+              No files selected.
+            </span>
+          </div>
+        </div>
+      </fieldset>
+
+      <p class="form-consent">
+        By submitting this form, you ask KASA Lab to use the information
+        provided to review and respond to your project enquiry. Please
+        ensure you have permission to share all submitted materials.
+        Submission does not create a contract or guarantee that the
+        project will be accepted.
+      </p>
+
+      <div class="form-actions">
+        <button
+          id="submit-button"
+          class="form-submit-button"
+          type="submit"
+        >
+          Submit project request
+        </button>
+
+        <span class="form-help">
+          Fields marked with <span class="required-mark">*</span> are required.
+        </span>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>
+      © <span id="current-year"></span> KASA Lab.
+      Research, engineering, and scientific collaboration.
+    </p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const form = document.getElementById("project-form");
+  const statusBox = document.getElementById("form-status");
+  const submitButton = document.getElementById("submit-button");
+  const fileInput = document.getElementById("files");
+  const fileSummary = document.getElementById("file-summary");
+  const yearElement = document.getElementById("current-year");
+
+  yearElement.textContent = new Date().getFullYear();
+
+  const maxFiles = 5;
+  const maxFileSize = 8 * 1024 * 1024;
+  const maxTotalSize = 20 * 1024 * 1024;
+
+  const allowedExtensions = new Set([
+    "pdf", "doc", "docx", "xls", "xlsx",
+    "csv", "txt", "png", "jpg", "jpeg", "zip"
+  ]);
+
+  function showStatus(message, type) {
+    statusBox.className = `form-status ${type}`;
+    statusBox.replaceChildren();
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = message;
+    statusBox.appendChild(paragraph);
+
+    statusBox.hidden = false;
+    statusBox.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+  }
+
+  function getExtension(filename) {
+    const name = filename.split(/[\\/]/).pop() || "";
+    const index = name.lastIndexOf(".");
+    return index > 0
+      ? name.slice(index + 1).toLowerCase()
+      : "";
+  }
+
+  function validateFiles(files) {
+    if (files.length > maxFiles) {
+      return `Please select no more than ${maxFiles} files.`;
+    }
+
+    let total = 0;
+
+    for (const file of files) {
+      const extension = getExtension(file.name);
+
+      if (!allowedExtensions.has(extension)) {
+        return `The file "${file.name}" has an unsupported extension.`;
       }
 
-      function getExtension(filename) {
-        const name = filename.split(/[\\/]/).pop() || "";
-        const index = name.lastIndexOf(".");
-        return index > 0 ? name.slice(index + 1).toLowerCase() : "";
+      if (file.size > maxFileSize) {
+        return `The file "${file.name}" exceeds the 8 MB limit.`;
       }
 
-      function validateFiles(files) {
-        if (files.length > maxFiles) {
-          return `Please select no more than ${maxFiles} files.`;
-        }
+      total += file.size;
+    }
 
-        let total = 0;
+    if (total > maxTotalSize) {
+      return "The combined file size must not exceed 20 MB.";
+    }
 
-        for (const file of files) {
-          const extension = getExtension(file.name);
+    return "";
+  }
 
-          if (!allowedExtensions.has(extension)) {
-            return `The file "${file.name}" has an unsupported extension.`;
-          }
+  function updateFileSummary() {
+    const files = Array.from(fileInput.files);
+    const error = validateFiles(files);
 
-          if (file.size > maxFileSize) {
-            return `The file "${file.name}" exceeds the 8 MB limit.`;
-          }
+    if (error) {
+      fileSummary.textContent = error;
+      fileSummary.style.color = "#842020";
+      return;
+    }
 
-          total += file.size;
-        }
+    fileSummary.style.color = "";
 
-        if (total > maxTotalSize) {
-          return "The combined file size must not exceed 20 MB.";
-        }
+    if (files.length === 0) {
+      fileSummary.textContent = "No files selected.";
+      return;
+    }
 
-        return "";
-      }
+    const totalBytes = files.reduce(
+      (sum, file) => sum + file.size,
+      0
+    );
 
-      function updateFileSummary() {
-        const files = Array.from(fileInput.files);
-        const error = validateFiles(files);
+    const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
 
-        if (error) {
-          fileSummary.textContent = error;
-          fileSummary.style.color = "#842020";
-          return;
-        }
+    fileSummary.textContent =
+      `${files.length} file(s) selected; combined size: ${totalMB} MB.`;
+  }
 
-        fileSummary.style.color = "";
+  fileInput.addEventListener("change", updateFileSummary);
 
-        if (files.length === 0) {
-          fileSummary.textContent = "No files selected.";
-          return;
-        }
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        const totalBytes = files.reduce(
-          (sum, file) => sum + file.size,
-          0
-        );
+    if (!form.reportValidity()) return;
 
-        const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
+    const fileError = validateFiles(Array.from(fileInput.files));
 
-        fileSummary.textContent =
-          `${files.length} file(s) selected; combined size: ${totalMB} MB.`;
-      }
+    if (fileError) {
+      showStatus(fileError, "error");
+      return;
+    }
 
-      fileInput.addEventListener("change", updateFileSummary);
+    submitButton.disabled = true;
+    submitButton.textContent = "Submitting…";
+    statusBox.hidden = true;
 
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (!form.reportValidity()) return;
-
-        const fileError = validateFiles(Array.from(fileInput.files));
-
-        if (fileError) {
-          showStatus(fileError, "error");
-          return;
-        }
-
-        submitButton.disabled = true;
-        submitButton.textContent = "Submitting…";
-        statusBox.hidden = true;
-
-        try {
-          const response = await fetch("/api/projects", {
-            method: "POST",
-            body: new FormData(form),
-            headers: {
-              "Accept": "application/json"
-            }
-          });
-
-          let result;
-
-          try {
-            result = await response.json();
-          } catch {
-            throw new Error(
-              "The server returned an unexpected response. Please try again later."
-            );
-          }
-
-          if (!response.ok || !result.success) {
-            throw new Error(
-              result.message || "Your request could not be submitted."
-            );
-          }
-
-          form.reset();
-          updateFileSummary();
-
-          statusBox.className = "form-status success";
-          statusBox.replaceChildren();
-
-          const heading = document.createElement("h2");
-          heading.textContent = "Thank you for contacting KASA Lab";
-
-          const message = document.createElement("p");
-          message.textContent = result.message ||
-            "Your project request has been received.";
-
-          const trackingLabel = document.createElement("p");
-          trackingLabel.textContent =
-            "Save the tracking code below. You may need it for future follow-up.";
-
-          const trackingCode = document.createElement("code");
-          trackingCode.textContent = result.trackingCode || "Not returned";
-
-          const copyButton = document.createElement("button");
-          copyButton.type = "button";
-          copyButton.className = "form-submit-button";
-          copyButton.textContent = "Copy tracking code";
-
-          copyButton.addEventListener("click", async () => {
-            try {
-              await navigator.clipboard.writeText(
-                trackingCode.textContent
-              );
-              copyButton.textContent = "Copied";
-            } catch {
-              copyButton.textContent =
-                "Select and copy the code above";
-            }
-          });
-
-          statusBox.append(
-            heading,
-            message,
-            trackingLabel,
-            trackingCode,
-            document.createElement("br"),
-            copyButton
-          );
-
-          if (result.emailSent === false) {
-            const emailWarning = document.createElement("p");
-            emailWarning.textContent =
-              "Email notification could not be confirmed. Your request may still be saved; please keep your tracking code.";
-            statusBox.appendChild(emailWarning);
-          }
-
-          statusBox.hidden = false;
-          statusBox.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-        } catch (error) {
-          showStatus(
-            error instanceof Error
-              ? error.message
-              : "Something went wrong. Please try again later.",
-            "error"
-          );
-        } finally {
-          submitButton.disabled = false;
-          submitButton.textContent = "Submit project request";
+    try {
+      const response = await fetch("/api/projects", {
+        method: "POST",
+        body: new FormData(form),
+        headers: {
+          "Accept": "application/json"
         }
       });
-    })();
-  </script>
 
-  <script src="script.js" defer></script>
+      let result;
+
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error(
+          "The server returned an unexpected response. Please try again later."
+        );
+      }
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || "Your request could not be submitted."
+        );
+      }
+
+      form.reset();
+      updateFileSummary();
+
+      statusBox.className = "form-status success";
+      statusBox.replaceChildren();
+
+      const heading = document.createElement("h2");
+      heading.textContent = "Thank you for contacting KASA Lab";
+
+      const message = document.createElement("p");
+      message.textContent = result.message ||
+        "Your project request has been received.";
+
+      const trackingLabel = document.createElement("p");
+      trackingLabel.textContent =
+        "Save the tracking code below. You may need it for future follow-up.";
+
+      const trackingCode = document.createElement("code");
+      trackingCode.textContent = result.trackingCode || "Not returned";
+
+      const copyButton = document.createElement("button");
+      copyButton.type = "button";
+      copyButton.className = "form-submit-button";
+      copyButton.textContent = "Copy tracking code";
+
+      copyButton.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(
+            trackingCode.textContent
+          );
+          copyButton.textContent = "Copied";
+        } catch {
+          copyButton.textContent =
+            "Select and copy the code above";
+        }
+      });
+
+      statusBox.append(
+        heading,
+        message,
+        trackingLabel,
+        trackingCode,
+        document.createElement("br"),
+        copyButton
+      );
+
+      if (result.emailSent === false) {
+        const emailWarning = document.createElement("p");
+        emailWarning.textContent =
+          "Email notification could not be confirmed. Your request may still be saved; please keep your tracking code.";
+        statusBox.appendChild(emailWarning);
+      }
+
+      statusBox.hidden = false;
+      statusBox.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    } catch (error) {
+      showStatus(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again later.",
+        "error"
+      );
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit project request";
+    }
+  });
+})();
+</script>
+
+<script src="script.js" defer></script>
+
 </body>
 </html>
