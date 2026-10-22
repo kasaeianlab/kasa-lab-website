@@ -47,3 +47,4 @@ CREATE INDEX IF NOT EXISTS idx_projects_status
 
 CREATE INDEX IF NOT EXISTS idx_project_files_project_id
   ON project_files(project_id);
+
