@@ -1,5 +1,15 @@
 [
   {
+    "name": "Professor Alibakhsh Kasaeian",
+    "role": "Lab Head",
+    "group": "faculty",
+    "linkedin": "https://www.linkedin.com/in/alibakhsh-kasaeian-b36386153/",
+    "bio": "Alibakhsh Kasaeian is a Full Professor at the University of Tehran and serves as the Head of the KASA Lab. He is consistently recognized among the world's top 2% of scientists, having been included in Stanford University's prestigious list for multiple consecutive years (from 2021 to 2025). His research interests encompass solar thermal and photovoltaic systems, nanofluid flow and heat transfer, thermodynamic and exergetic analyses of power and cooling systems, hybrid renewable energy systems, solar-powered water purification and desalination, building energy optimization, and hydrogen production.  ",
+    "body": "",
+    "slug": "professor-alibaksh-kasaeian",
+    "order": 9999
+  },
+  {
     "name": "Kambiz Divsalar",
     "role": "M.Sc. Researcher",
     "group": "researchers",
@@ -8,16 +18,6 @@
     "bio": "Kambiz is a master of science researcher with a strong academic background in fluid mechanics, heat transfer, and energy systems. His research interests focus on thermal management, fundamental nature of transport phenomena, and energy technologies . His research experience includes developing numerical battery models to accurately predict heat generation during charging and discharging, as well as investigating bio-inspired fin structures and phase change materials to enhance heat transfer and improve battery thermal regulation. His long-term academic goal is to pursue doctoral research in thermal energy engineering and contribute to the advancement of innovative technologies for sustainable energy systems.",
     "body": "",
     "slug": "kambiz-divsalar",
-    "order": 9999
-  },
-  {
-    "name": "Professor Alibakhsh Kasaeian",
-    "role": "Lab Head",
-    "linkedin": "https://www.linkedin.com/in/alibakhsh-kasaeian-b36386153/",
-    "bio": "Alibakhsh Kasaeian is a Full Professor at the University of Tehran and serves as the Head of the KASA Lab. He is consistently recognized among the world's top 2% of scientists, having been included in Stanford University's prestigious list for multiple consecutive years (from 2021 to 2025). His research interests encompass solar thermal and photovoltaic systems, nanofluid flow and heat transfer, thermodynamic and exergetic analyses of power and cooling systems, hybrid renewable energy systems, solar-powered water purification and desalination, building energy optimization, and hydrogen production.  ",
-    "body": "",
-    "slug": "professor-alibaksh-kasaeian",
-    "group": "researchers",
     "order": 9999
   }
 ]
