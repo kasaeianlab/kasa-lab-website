@@ -3,7 +3,7 @@ media:
   - name: images
     label: Images
     input: public/images
-    output: /images
+    output: /public/images
 
 content:
   - name: news
