@@ -1,11 +1,83 @@
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Learn about KASA Lab, its research and team.">
+
+  <meta
+    name="description"
+    content="Learn about KASA Lab, its research, faculty, scientific advisors, researchers, and project team."
+  >
+
+  <meta name="theme-color" content="#ffffff">
   <title>About Us | KASA Lab</title>
+
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .team-group {
+      margin-top: 42px;
+    }
+
+    .team-group:first-of-type {
+      margin-top: 30px;
+    }
+
+    .team-group-heading {
+      max-width: 760px;
+      margin-bottom: 24px;
+    }
+
+    .team-group-heading h3 {
+      margin: 0 0 8px;
+      color: var(--navy);
+      font-family: Manrope, sans-serif;
+      font-size: clamp(23px, 3vw, 29px);
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    .team-group-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .team-group + .team-group {
+      padding-top: 38px;
+      border-top: 1px solid var(--line);
+    }
+
+    .team-group .team-grid {
+      margin-top: 0;
+    }
+
+    .team-group .team-card {
+      height: 100%;
+    }
+
+    .team-group .team-card-body {
+      overflow-wrap: anywhere;
+    }
+
+    .team-empty {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .team-group {
+        margin-top: 32px;
+      }
+
+      .team-group + .team-group {
+        padding-top: 28px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -26,13 +98,16 @@
     class="menu-toggle"
     aria-label="Toggle navigation"
     aria-expanded="false"
+    aria-controls="main-navigation"
+    type="button"
   >☰</button>
 
-  <nav class="nav">
+  <nav class="nav" id="main-navigation">
     <a href="index.html">Home</a>
-    <a class="active" href="about.html">About Us</a>
+    <a href="services.html">Services</a>
+    <a class="active" href="about.html" aria-current="page">About Us</a>
     <a href="news.html">News</a>
-    <a href="contact.html">Contact Us</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </header>
 
@@ -41,19 +116,24 @@
   <!-- Page introduction -->
   <section class="page-hero">
     <p class="eyebrow blue">ABOUT KASA LAB</p>
-    <h1>Knowledge-driven research.<br>
+
+    <h1>
+      Knowledge-driven research.<br>
       <span>Engineering real impact.</span>
     </h1>
+
     <p>
-      Research, simulation and engineering for complex challenges
+      Research, simulation, and engineering for complex challenges
       in energy, water, and advanced systems.
     </p>
   </section>
+
 
   <!-- About the laboratory -->
   <section class="section about-layout">
     <div>
       <p class="eyebrow blue">WHO WE ARE</p>
+
       <h2>Bridging science and application</h2>
 
       <p>
@@ -66,31 +146,35 @@
 
       <p>
         Our work brings together scientific research, computational
-        modeling, numerical simulation, fluid mechanics, programming,
+        modelling, numerical simulation, fluid mechanics, programming,
         artificial intelligence, optimization, and experimental
-        approaches to develop practical and innovative solutions.
+        approaches to investigate technical challenges and develop
+        practical solutions.
       </p>
 
       <p>
-        Beyond academic research, KASA Lab collaborates with
-        researchers, universities, and industry partners on research
-        projects, computational studies, fluid-flow analysis,
-        engineering analysis, simulation, data-driven modeling,
-        and technology development.
+        Beyond academic research, KASA Lab engages with researchers,
+        universities, and industry partners on research projects,
+        computational studies, engineering analysis, simulation,
+        data-driven modelling, and technology development.
       </p>
     </div>
 
     <aside class="quote-panel">
       <span class="quote-mark">“</span>
+
       <p>
         We aim to bridge the gap between scientific knowledge and
         real-world applications, turning research into practical
         solutions.
       </p>
+
       <span class="quote-rule"></span>
+
       <strong>Research · Simulation · AI · Engineering</strong>
     </aside>
   </section>
+
 
   <!-- Research interests -->
   <section class="section interests-section">
@@ -115,30 +199,65 @@
     </div>
   </section>
 
-  <!-- Team members loaded from team.json -->
+
+  <!-- Team -->
   <section class="section team-section">
-    <div class="section-title-row">
-      <div>
-        <p class="eyebrow blue">THE PEOPLE BEHIND THE RESEARCH</p>
-        <h2>Our team</h2>
-        <p class="muted">
-          Meet the researchers and engineers behind KASA Lab.
-        </p>
-      </div>
+
+    <div class="section-heading">
+      <p class="eyebrow blue">THE PEOPLE BEHIND THE RESEARCH</p>
+      <h2>Our Team</h2>
+
+      <p>
+        KASA Lab brings together academic leadership, scientific
+        guidance, researchers, and project contributors across
+        research and engineering activities.
+      </p>
     </div>
 
-    <div class="team-grid" id="team-list">
-      <p class="small-note">Loading team members…</p>
-    </div>
+    <!-- Faculty and scientific advisors -->
+    <section class="team-group" id="faculty-group" hidden>
+      <div class="team-group-heading">
+        <h3>Faculty &amp; Scientific Advisors</h3>
+
+        <p>
+          Academic leadership, faculty members, and scientific advisors
+          contributing expertise and guidance to the laboratory.
+        </p>
+      </div>
+
+      <div class="team-grid" id="faculty-list"></div>
+    </section>
+
+    <!-- Researchers and project team -->
+    <section class="team-group" id="researchers-group" hidden>
+      <div class="team-group-heading">
+        <h3>Researchers &amp; Project Team</h3>
+
+        <p>
+          Researchers and project contributors involved in scientific
+          investigation, computational modelling, and engineering work.
+        </p>
+      </div>
+
+      <div class="team-grid" id="researchers-list"></div>
+    </section>
+
+    <p class="small-note" id="team-status" role="status">
+      Loading team members…
+    </p>
+
   </section>
 
 </main>
 
+
 <footer class="site-footer">
   <a class="footer-brand" href="index.html">KASA Lab</a>
+
   <p>Knowledge-based Advanced Solutions Association</p>
 
   <div class="footer-links">
+    <a href="services.html">Services</a>
     <a href="about.html">About Us</a>
     <a href="news.html">News</a>
     <a href="contact.html">Contact</a>
@@ -149,11 +268,138 @@
   </small>
 </footer>
 
+
 <script src="script.js"></script>
 
 <script>
 async function loadTeamMembers() {
-  const container = document.getElementById("team-list");
+  const facultyGroup = document.getElementById("faculty-group");
+  const researchersGroup = document.getElementById("researchers-group");
+  const facultyList = document.getElementById("faculty-list");
+  const researchersList = document.getElementById("researchers-list");
+  const status = document.getElementById("team-status");
+
+  function normaliseGroup(value) {
+    const group = String(value || "")
+      .trim()
+      .toLowerCase()
+      .replace(/_/g, "-");
+
+    const facultyValues = [
+      "faculty",
+      "advisor",
+      "advisors",
+      "faculty-advisor",
+      "faculty-advisors",
+      "faculty & scientific advisors",
+      "faculty and scientific advisors",
+      "scientific advisors"
+    ];
+
+    return facultyValues.includes(group) ? "faculty" : "researchers";
+  }
+
+  function getOrder(member) {
+    const value = Number(member.order);
+
+    return Number.isFinite(value) ? value : 9999;
+  }
+
+  function createMemberCard(member) {
+    const card = document.createElement("article");
+    card.className = "team-card";
+
+    const nameText = String(member.name || "Team member").trim();
+    const initial = nameText.charAt(0).toUpperCase() || "K";
+
+    function createAvatar() {
+      const avatar = document.createElement("div");
+      avatar.className = "team-avatar";
+      avatar.textContent = initial;
+      avatar.setAttribute("aria-label", nameText);
+      return avatar;
+    }
+
+    if (member.photo) {
+      const photo = document.createElement("img");
+      photo.className = "team-photo";
+      photo.src = member.photo;
+      photo.alt = nameText;
+      photo.loading = "lazy";
+
+      photo.addEventListener("error", () => {
+        if (photo.isConnected) {
+          photo.replaceWith(createAvatar());
+        }
+      }, { once: true });
+
+      card.appendChild(photo);
+    } else {
+      card.appendChild(createAvatar());
+    }
+
+    const details = document.createElement("div");
+    details.className = "team-card-body";
+
+    const name = document.createElement("h3");
+    name.textContent = nameText;
+
+    const role = document.createElement("p");
+    role.className = "team-role";
+    role.textContent = member.role || "";
+
+    details.append(name, role);
+
+    const biography = member.bio || member.body || "";
+
+    if (biography) {
+      const bio = document.createElement("p");
+      bio.className = "team-bio";
+
+      // Render biography as text, not executable HTML.
+      bio.textContent = String(biography);
+
+      details.appendChild(bio);
+    }
+
+    if (member.email) {
+      const email = document.createElement("a");
+      email.className = "team-email";
+      email.href = "mailto:" + String(member.email);
+      email.textContent = String(member.email);
+      details.appendChild(email);
+    }
+
+    if (member.linkedin) {
+      const linkedinUrl = String(member.linkedin).trim();
+
+      try {
+        const parsedUrl = new URL(linkedinUrl);
+
+        if (
+          parsedUrl.protocol === "https:" &&
+          (
+            parsedUrl.hostname === "linkedin.com" ||
+            parsedUrl.hostname.endsWith(".linkedin.com")
+          )
+        ) {
+          const linkedin = document.createElement("a");
+          linkedin.className = "team-linkedin";
+          linkedin.href = parsedUrl.href;
+          linkedin.textContent = "LinkedIn Profile";
+          linkedin.target = "_blank";
+          linkedin.rel = "noopener noreferrer";
+
+          details.appendChild(linkedin);
+        }
+      } catch {
+        // Ignore invalid LinkedIn URLs.
+      }
+    }
+
+    card.appendChild(details);
+    return card;
+  }
 
   try {
     const response = await fetch("public/data/team.json");
@@ -164,95 +410,54 @@ async function loadTeamMembers() {
 
     const members = await response.json();
 
-    container.replaceChildren();
+    facultyList.replaceChildren();
+    researchersList.replaceChildren();
 
     if (!Array.isArray(members) || members.length === 0) {
-      container.innerHTML =
-        '<p class="small-note">Team profiles will be published here soon.</p>';
+      status.textContent =
+        "Team profiles will be published here soon.";
       return;
     }
 
-    members.forEach(member => {
-      const card = document.createElement("article");
-      card.className = "team-card";
+    const sortedMembers = [...members].sort((a, b) => {
+      const orderDifference = getOrder(a) - getOrder(b);
 
-      // Member photo or placeholder
-      if (member.photo) {
-        const photo = document.createElement("img");
-        photo.className = "team-photo";
-        photo.src = member.photo;
-        photo.alt = member.name || "Team member";
-        photo.loading = "lazy";
-
-        photo.onerror = () => {
-          photo.remove();
-
-          const avatar = document.createElement("div");
-          avatar.className = "team-avatar";
-          avatar.textContent =
-            (member.name || "K").trim().charAt(0).toUpperCase();
-
-          card.insertBefore(avatar, card.firstChild);
-        };
-
-        card.appendChild(photo);
-      } else {
-        const avatar = document.createElement("div");
-        avatar.className = "team-avatar";
-        avatar.textContent =
-          (member.name || "K").trim().charAt(0).toUpperCase();
-
-        card.appendChild(avatar);
+      if (orderDifference !== 0) {
+        return orderDifference;
       }
 
-      const details = document.createElement("div");
-      details.className = "team-card-body";
-
-      const name = document.createElement("h3");
-      name.textContent = member.name || "Team member";
-
-      const role = document.createElement("p");
-      role.className = "team-role";
-      role.textContent = member.role || "";
-
-      details.append(name, role);
-
-      // Biography may be stored in bio or body
-      const biography = member.bio || member.body || "";
-
-      if (biography) {
-        const bio = document.createElement("p");
-        bio.className = "team-bio";
-        bio.textContent = biography;
-        details.appendChild(bio);
-      }
-
-      // Optional email address
-      if (member.email) {
-        const email = document.createElement("a");
-        email.className = "team-email";
-        email.href = "mailto:" + member.email;
-        email.textContent = member.email;
-        details.appendChild(email);
-      }
-      if (member.linkedin) {
-      const linkedin = document.createElement("a");
-      linkedin.className = "team-linkedin";
-      linkedin.href = member.linkedin;
-      linkedin.textContent = "LinkedIn Profile";
-      linkedin.target = "_blank";
-      linkedin.rel = "noopener noreferrer";
-      details.appendChild(linkedin);
-      }
-      card.appendChild(details);
-      container.appendChild(card);
+      return String(a.name || "").localeCompare(
+        String(b.name || "")
+      );
     });
+
+    let facultyCount = 0;
+    let researchersCount = 0;
+
+    sortedMembers.forEach(member => {
+      const card = createMemberCard(member);
+      const group = normaliseGroup(member.group);
+
+      if (group === "faculty") {
+        facultyList.appendChild(card);
+        facultyCount++;
+      } else {
+        researchersList.appendChild(card);
+        researchersCount++;
+      }
+    });
+
+    facultyGroup.hidden = facultyCount === 0;
+    researchersGroup.hidden = researchersCount === 0;
+
+    status.hidden = true;
 
   } catch (error) {
     console.error("Error loading team members:", error);
 
-    container.innerHTML =
-      '<p class="small-note">Team information could not be loaded. Please try again later.</p>';
+    status.hidden = false;
+    status.textContent =
+      "Team information could not be loaded. Please try again later.";
   }
 }
 
