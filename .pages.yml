@@ -16,17 +16,21 @@ content:
         label: Title
         type: string
         required: true
+
       - name: date
         label: Date
         type: date
         required: true
+
       - name: image
         label: Cover Image
         type: image
         required: false
+
       - name: summary
         label: Summary
         type: text
+
       - name: body
         label: Article
         type: rich-text
@@ -41,19 +45,36 @@ content:
         label: Full Name
         type: string
         required: true
+
       - name: role
         label: Role
         type: string
         required: true
+
+      - name: group
+        label: Team Group
+        type: string
+        required: true
+        description: 'Use "faculty" for Faculty & Scientific Advisors, or "researchers" for Researchers & Project Team.'
+
+      - name: order
+        label: Display Order
+        type: number
+        required: false
+        description: Use a number to control the order within the group. Smaller numbers appear first, e.g. 1, 2, 3.
+
       - name: photo
         label: Photo
         type: image
+
       - name: email
         label: Email
         type: string
+
       - name: linkedin
         label: LinkedIn Profile
         type: string
+
       - name: bio
         label: Biography
         type: rich-text
@@ -68,6 +89,7 @@ content:
         label: Page Title
         type: string
         required: true
+
       - name: body
         label: Content
         type: rich-text
