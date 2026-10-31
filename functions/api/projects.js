@@ -37,7 +37,10 @@ function cleanText(value, maxLength = 5000) {
 }
 
 function randomToken(byteLength = 24) {
-  const bytes = crypto.getRandomValues(new Uint8Array(byteLength));
+  const bytes = crypto.getRandomValues(
+    new Uint8Array(byteLength)
+  );
+
   return Array.from(bytes)
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
@@ -129,20 +132,23 @@ async function sendNotification(env, project, trackingCode) {
   ].join("\n");
 
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from: env.RESEND_FROM_EMAIL,
-        to: [env.ADMIN_EMAIL],
-        reply_to: project.email,
-        subject: `New KASA Lab project request: ${project.project_title}`,
-        text: message
-      })
-    });
+    const response = await fetch(
+      "https://api.resend.com/emails",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${env.RESEND_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          from: env.RESEND_FROM_EMAIL,
+          to: [env.ADMIN_EMAIL],
+          reply_to: project.email,
+          subject: `New KASA Lab project request: ${project.project_title}`,
+          text: message
+        })
+      }
+    );
 
     return response.ok;
   } catch {
@@ -151,6 +157,7 @@ async function sendNotification(env, project, trackingCode) {
 }
 
 export async function onRequestPost({ request, env }) {
+  // Check required configuration.
   if (
     !env.DB ||
     !env.TRACKING_HASH_SECRET ||
@@ -162,6 +169,7 @@ export async function onRequestPost({ request, env }) {
     }, 503);
   }
 
+  // Validate request content type.
   const contentType = request.headers.get("Content-Type") || "";
 
   if (!contentType.toLowerCase().startsWith("multipart/form-data")) {
@@ -173,7 +181,9 @@ export async function onRequestPost({ request, env }) {
 
   // File uploads are temporarily disabled.
   // Reject oversized requests before parsing the form.
-  const contentLength = Number(request.headers.get("Content-Length") || 0);
+  const contentLength = Number(
+    request.headers.get("Content-Length") || 0
+  );
 
   if (contentLength > 128 * 1024) {
     return jsonResponse({
@@ -182,6 +192,7 @@ export async function onRequestPost({ request, env }) {
     }, 413);
   }
 
+  // Read submitted form data.
   let form;
 
   try {
@@ -201,18 +212,24 @@ export async function onRequestPost({ request, env }) {
     });
   }
 
+  // Extract and validate form fields.
   const name = cleanText(form.get("name"), 150);
   const email = cleanText(form.get("email"), 254).toLowerCase();
   const organization = cleanText(form.get("organization"), 200);
-  const organizationType = cleanText(form.get("organization_type"), 50);
+  const organizationType = cleanText(
+    form.get("organization_type"),
+    50
+  );
   const country = cleanText(form.get("country"), 100);
   const serviceType = cleanText(form.get("service_type"), 80);
   const projectTitle = cleanText(form.get("project_title"), 200);
   const description = cleanText(form.get("description"), 10000);
+
   const expectedDeliverables = cleanText(
     form.get("expected_deliverables"),
     4000
   );
+
   const timeline = cleanText(form.get("timeline"), 150);
 
   if (
@@ -242,8 +259,11 @@ export async function onRequestPost({ request, env }) {
     }, 400);
   }
 
+  // Apply IP-based rate limiting.
   const now = Math.floor(Date.now() / 1000);
-  const ipAddress = request.headers.get("CF-Connecting-IP") || "unknown";
+  const ipAddress =
+    request.headers.get("CF-Connecting-IP") || "unknown";
+
   const ipHash = await sha256Hex(
     `${env.RATE_LIMIT_SALT}:${ipAddress}`
   );
@@ -266,13 +286,17 @@ export async function onRequestPost({ request, env }) {
     }, 429);
   }
 
+  // Generate project ID and tracking code.
   const projectId = crypto.randomUUID();
   const trackingCode = `KASA-${randomToken(24)}`;
+
   const trackingHash = await sha256Hex(
     `${env.TRACKING_HASH_SECRET}:${trackingCode}`
   );
+
   const timestamp = new Date().toISOString();
 
+  // Prepare project data.
   const project = {
     id: projectId,
     name,
@@ -283,10 +307,14 @@ export async function onRequestPost({ request, env }) {
     service_type: serviceType,
     project_title: projectTitle,
     description,
-    expected_deliverables,
+
+    // Fixed: use the correctly defined camelCase variable.
+    expected_deliverables: expectedDeliverables,
+
     timeline
   };
 
+  // Save project in D1.
   try {
     await env.DB.prepare(`
       INSERT INTO projects (
@@ -334,8 +362,14 @@ export async function onRequestPost({ request, env }) {
     }, 500);
   }
 
-  const emailSent = await sendNotification(env, project, trackingCode);
+  // Send administrative email notification.
+  const emailSent = await sendNotification(
+    env,
+    project,
+    trackingCode
+  );
 
+  // Update notification status in D1.
   try {
     await env.DB.prepare(`
       UPDATE projects
@@ -350,6 +384,7 @@ export async function onRequestPost({ request, env }) {
     // The request remains saved even if updating this status fails.
   }
 
+  // Return successful submission response.
   return jsonResponse({
     success: true,
     projectId,
