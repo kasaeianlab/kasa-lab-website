@@ -1,4 +1,106 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>KASA Lab Admin</title><link rel="stylesheet" href="../styles.css"></head><body><main style="max-width:900px;margin:70px auto;padding:24px"><h1>KASA Lab Admin</h1><p id="state">Checking your session…</p><button id="logout" hidden>Sign out</button></main><script>
-(async()=>{const r=await fetch('/api/admin/auth/me',{credentials:'same-origin',cache:'no-store'});if(!r.ok){location.replace('/admin/');return}const d=await r.json();document.getElementById('state').textContent='Signed in as '+d.email+'. The project-management dashboard will be added in the next stage.';document.getElementById('logout').hidden=false})();
-document.getElementById('logout').addEventListener('click',async()=>{await fetch('/api/admin/auth/logout',{method:'POST',credentials:'same-origin'});location.replace('/admin/')});
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>Project Dashboard | KASA Lab</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    body{background:#f5f8fb;color:#1a2a3d}.admin-wrap{max-width:1440px;margin:36px auto;padding:0 22px 50px}
+    .admin-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}.admin-top h1{font-size:30px;margin:0;color:#10294a}
+    .admin-top p{margin:6px 0 0;color:#657386}.admin-btn{border:1px solid #cbd7e3;border-radius:7px;background:#fff;padding:10px 15px;cursor:pointer;color:#173c64;font:inherit}.admin-btn.primary{background:#1769c2;color:#fff;border-color:#1769c2}.admin-btn:disabled{opacity:.55;cursor:wait}
+    .admin-grid{display:grid;grid-template-columns:minmax(290px,380px) minmax(0,1fr);gap:20px;align-items:start}.panel{background:#fff;border:1px solid #e3eaf1;border-radius:12px;box-shadow:0 5px 20px rgba(16,41,74,.045)}
+    .list-panel{overflow:hidden}.list-head{padding:18px;border-bottom:1px solid #e3eaf1}.list-head h2,.detail-panel h2{font-size:19px;margin:0 0 13px;color:#10294a}.filters{display:grid;gap:9px}.admin-input,.admin-select,.admin-textarea{width:100%;box-sizing:border-box;border:1px solid #d5dee8;border-radius:7px;padding:10px 11px;font:inherit;color:#1a2a3d;background:#fff}.admin-textarea{min-height:115px;resize:vertical}.project-list{max-height:calc(100vh - 290px);min-height:220px;overflow:auto}.project-item{display:block;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid #edf1f5;padding:15px 18px;cursor:pointer;font:inherit}.project-item:hover,.project-item.active{background:#eef5fc}.project-item.active{box-shadow:inset 3px 0 #1769c2}.project-item strong{display:block;color:#173c64;margin-bottom:5px}.project-item small{display:block;color:#657386;line-height:1.5}.status-pill{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;background:#edf2f7;color:#40536a;margin-top:8px}
+    .detail-panel{padding:22px}.empty-state{padding:55px 20px;text-align:center;color:#657386}.detail-title{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:1px solid #e3eaf1;padding-bottom:17px;margin-bottom:20px}.detail-title h2{margin:0 0 5px}.detail-title p{margin:0;color:#657386}.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 22px}.field label{display:block;font-size:12px;font-weight:700;color:#657386;margin-bottom:6px}.field p{margin:0;line-height:1.6;overflow-wrap:anywhere}.full{grid-column:1/-1}.section-title{font-size:15px;color:#10294a;margin:24px 0 12px;padding-top:17px;border-top:1px solid #e3eaf1}.note-help{font-size:12px;color:#657386;margin:5px 0 0}.save-row{display:flex;align-items:center;gap:12px;margin-top:16px}.message{font-size:13px;color:#17633b}.error{color:#b42318}.loading{padding:24px;color:#657386;text-align:center}
+    @media(max-width:850px){.admin-grid{grid-template-columns:1fr}.project-list{max-height:360px}.detail-grid{grid-template-columns:1fr}.full{grid-column:auto}.admin-top{align-items:flex-start}.admin-top h1{font-size:25px}}
+  </style>
+</head>
+<body>
+  <main class="admin-wrap">
+    <header class="admin-top"><div><h1>KASA Lab Project Dashboard</h1><p id="admin-email">Checking your session…</p></div><button class="admin-btn" id="logout">Sign out</button></header>
+    <div id="global-message" role="status" aria-live="polite"></div>
+    <div class="admin-grid">
+      <section class="panel list-panel" aria-label="Project list">
+        <div class="list-head"><h2>Submitted projects</h2><div class="filters"><input class="admin-input" id="search" type="search" placeholder="Search title, applicant, email…"><select class="admin-select" id="status-filter"><option value="">All statuses</option><option>Submitted</option><option>Under Review</option><option>Accepted</option><option>Rejected</option><option>Completed</option></select></div></div>
+        <div id="project-list" class="project-list"><div class="loading">Loading projects…</div></div>
+      </section>
+      <section class="panel detail-panel" id="detail-panel"><div class="empty-state">Select a project from the list to view its details.</div></section>
+    </div>
+  </main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const state = { projects: [], selectedId: null, detail: null };
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const date = (value) => value ? new Date(value).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'}) : '—';
+  const showMessage = (message, error=false) => { $('global-message').className = error ? 'message error' : 'message'; $('global-message').textContent = message || ''; };
+
+  async function api(url, options={}) {
+    const response = await fetch(url, { credentials:'same-origin', cache:'no-store', ...options, headers:{ ...(options.headers||{}) } });
+    let data = {}; try { data = await response.json(); } catch {}
+    if (response.status === 401) { location.replace('/admin/'); throw new Error('Your session has expired.'); }
+    if (!response.ok || data.success === false) throw new Error(data.message || `Request failed (${response.status}).`);
+    return data;
+  }
+
+  async function loadProjects() {
+    $('project-list').innerHTML = '<div class="loading">Loading projects…</div>';
+    try {
+      const data = await api('/api/admin/projects');
+      state.projects = data.projects || [];
+      renderList();
+    } catch (error) { $('project-list').textContent = error.message; showMessage(error.message, true); }
+  }
+
+  function renderList() {
+    const query = $('search').value.trim().toLowerCase();
+    const status = $('status-filter').value;
+    const filtered = state.projects.filter(p => (!status || p.status === status) && [p.project_title,p.name,p.email,p.organization].some(v => String(v||'').toLowerCase().includes(query)));
+    if (!filtered.length) { $('project-list').innerHTML = '<div class="loading">No matching projects found.</div>'; return; }
+    $('project-list').innerHTML = filtered.map(p => `<button class="project-item ${p.id===state.selectedId?'active':''}" data-id="${esc(p.id)}"><strong>${esc(p.project_title)}</strong><small>${esc(p.name)} · ${esc(p.email)}</small><small>${esc(date(p.created_at))}</small><span class="status-pill">${esc(p.status)}</span></button>`).join('');
+    $('project-list').querySelectorAll('[data-id]').forEach(button => button.addEventListener('click', () => openProject(button.dataset.id)));
+  }
+
+  function valueField(label, value, full=false) { return `<div class="field ${full?'full':''}"><label>${esc(label)}</label><p>${esc(value || '—').replace(/\n/g,'<br>')}</p></div>`; }
+
+  async function openProject(id) {
+    state.selectedId = id; renderList(); $('detail-panel').innerHTML = '<div class="loading">Loading project details…</div>';
+    try {
+      const data = await api('/api/admin/projects/' + encodeURIComponent(id));
+      state.detail = data.project; renderDetail();
+    } catch (error) { $('detail-panel').textContent = error.message; showMessage(error.message, true); }
+  }
+
+  function renderDetail() {
+    const p = state.detail; if (!p) return;
+    const statuses = ['Submitted','Under Review','Accepted','Rejected','Completed'];
+    $('detail-panel').innerHTML = `
+      <div class="detail-title"><div><h2>${esc(p.project_title)}</h2><p>Submitted ${esc(date(p.created_at))} · Project ID: ${esc(p.id)}</p></div><span class="status-pill">${esc(p.status)}</span></div>
+      <div class="detail-grid">
+        ${valueField('Applicant',p.name)}${valueField('Email',p.email)}${valueField('Organization',p.organization)}${valueField('Organization type',p.organization_type)}${valueField('Country',p.country)}${valueField('Requested service',p.service_type)}${valueField('Timeline',p.timeline)}${valueField('Budget range',p.budget_range)}${valueField('Description',p.description,true)}${valueField('Expected deliverables',p.expected_deliverables,true)}${valueField('Admin notification',p.notification_status)}${valueField('Last updated',date(p.updated_at))}
+      </div>
+      <h3 class="section-title">Project management</h3>
+      <div class="field"><label for="edit-status">Project status</label><select id="edit-status" class="admin-select">${statuses.map(s=>`<option ${p.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <h3 class="section-title">Public note <span style="font-weight:400;color:#657386">(visible to the applicant)</span></h3>
+      <textarea id="public-note" class="admin-textarea" maxlength="3000" placeholder="Write an update the applicant can see…">${esc(p.public_note||'')}</textarea><p class="note-help">Up to 3,000 characters. Clear the field and save to remove the note.</p>
+      <h3 class="section-title">Internal note <span style="font-weight:400;color:#657386">(admin only)</span></h3>
+      <textarea id="internal-note" class="admin-textarea" maxlength="5000" placeholder="Private notes for the KASA Lab team…">${esc(p.internal_note||'')}</textarea><p class="note-help">Up to 5,000 characters. This note is never shown on the public tracking page.</p>
+      <div class="save-row"><button class="admin-btn primary" id="save-project">Save changes</button><span id="save-message" class="message" role="status"></span></div>`;
+    $('save-project').addEventListener('click', saveProject);
+  }
+
+  async function saveProject() {
+    const button = $('save-project'); const message = $('save-message'); button.disabled = true; message.textContent = 'Saving…'; message.className = 'message';
+    try {
+      await api('/api/admin/projects/' + encodeURIComponent(state.selectedId), { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ status:$('edit-status').value, publicNote:$('public-note').value, internalNote:$('internal-note').value }) });
+      message.textContent = 'Changes saved.'; state.detail.status = $('edit-status').value; state.detail.public_note = $('public-note').value.trim(); state.detail.internal_note = $('internal-note').value.trim();
+      await loadProjects(); renderList();
+    } catch (error) { message.textContent = error.message; message.className = 'message error'; }
+    finally { button.disabled = false; }
+  }
+
+  $('search').addEventListener('input', renderList); $('status-filter').addEventListener('change', renderList);
+  $('logout').addEventListener('click', async () => { $('logout').disabled=true; try { await fetch('/api/admin/auth/logout',{method:'POST',credentials:'same-origin'}); } finally { location.replace('/admin/'); } });
+  (async()=>{ try { const me=await api('/api/admin/auth/me'); $('admin-email').textContent='Signed in as '+me.email; await loadProjects(); } catch(error) { showMessage(error.message,true); } })();
+})();
+</script>
+</body></html>
