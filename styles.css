@@ -1357,3 +1357,198 @@ main p {
   text-justify: inter-word;
   line-height: 1.8;
 }
+
+/* ========================================
+   Project tracking page
+   ======================================== */
+.track-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 76px 24px 88px;
+}
+.track-intro {
+  max-width: 700px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+.track-intro .eyebrow { text-align: center; }
+.track-intro h1 {
+  margin: 0 0 16px;
+  color: var(--navy);
+  font-size: clamp(34px, 5vw, 48px);
+  line-height: 1.15;
+  letter-spacing: -1.6px;
+  text-align: center;
+}
+.track-intro > p:last-child {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.8;
+  text-align: center;
+}
+.track-panel {
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: 0 14px 42px rgba(16, 41, 74, 0.07);
+}
+.track-form label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+}
+.track-input-row {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+.track-input-row input {
+  min-width: 0;
+  flex: 1;
+  padding: 13px 15px;
+  border: 1px solid #d8e1eb;
+  border-radius: 6px;
+  color: var(--ink);
+  background: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  letter-spacing: .2px;
+}
+.track-input-row input:focus {
+  outline: 2px solid #b9d9fa;
+  border-color: var(--blue);
+}
+.track-input-row .button:disabled { opacity: .65; cursor: wait; }
+.track-help {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.track-feedback {
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.track-feedback[hidden], .track-result[hidden],
+.public-note-section[hidden], .no-public-note[hidden] { display: none; }
+.track-feedback.error {
+  color: #842020;
+  background: #fff4f4;
+  border: 1px solid #e6b5b5;
+}
+.track-result {
+  margin-top: 30px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.track-result-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+.track-result-heading .eyebrow { margin-bottom: 5px; }
+.track-result-heading h2 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 23px;
+}
+.project-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 48%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  overflow-wrap: anywhere;
+  background: #edf2f7;
+  color: #34465b;
+}
+.status-submitted { background: #eaf3fb; color: #175b9b; }
+.status-review { background: #fff5df; color: #805600; }
+.status-progress { background: #eaf4ff; color: #155b9b; }
+.status-complete { background: #eaf6ed; color: #24613a; }
+.status-closed { background: #fbeeee; color: #8a2929; }
+.tracked-project-title {
+  margin: 0 0 20px;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.track-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+.track-metadata > div {
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+.track-metadata dt {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.track-metadata dd {
+  margin: 0;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+}
+.public-note-section {
+  margin-top: 22px;
+  padding: 20px;
+  border-left: 3px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  background: #f3f8fd;
+}
+.public-note-section .eyebrow { margin-bottom: 8px; }
+.public-note {
+  margin: 0;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.public-note-date {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+.no-public-note {
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.track-security-note {
+  margin: 24px auto 0;
+  max-width: 720px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.track-security-note strong { color: var(--navy); }
+.track-security-note p { margin: 4px 0 0; text-align: center; }
+.track-security-note a { color: var(--blue); font-weight: 700; text-decoration: underline; }
+@media (max-width: 640px) {
+  .track-section { padding: 48px 16px 60px; }
+  .track-input-row { flex-direction: column; }
+  .track-input-row .button { width: 100%; }
+  .track-result-heading { flex-direction: column; }
+  .project-status { max-width: 100%; }
+  .track-metadata { grid-template-columns: minmax(0, 1fr); }
+}

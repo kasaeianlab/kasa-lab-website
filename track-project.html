@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Check the latest status and public updates for your KASA Lab project request.">
+  <meta name="theme-color" content="#ffffff">
+  <title>Track Your Project | KASA Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="KASA Lab Home">
+      <img src="kasa-logo.png" alt="KASA Lab logo" class="brand-logo">
+      <span class="brand-tagline">Knowledge-based Advanced Solutions Association</span>
+    </a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false"
+      aria-controls="main-navigation" type="button">☰</button>
+    <nav class="nav" id="main-navigation">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About Us</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
+      <a class="active" href="track-project.html" aria-current="page">Track Project</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="track-section">
+      <div class="track-intro">
+        <p class="eyebrow blue">PROJECT FOLLOW-UP</p>
+        <h1>Track Your Project</h1>
+        <p>Enter the tracking code you received after submitting your project request to view its latest status and any public updates from KASA Lab.</p>
+      </div>
+
+      <div class="track-panel">
+        <form id="tracking-form" class="track-form" novalidate>
+          <label for="tracking-code">Project tracking code</label>
+          <div class="track-input-row">
+            <input id="tracking-code" name="trackingCode" type="text"
+              placeholder="KASA-xxxxxxxx..." autocomplete="off"
+              autocapitalize="characters" spellcheck="false"
+              aria-describedby="tracking-help" required maxlength="53">
+            <button id="track-button" class="button button-primary" type="submit">Track project</button>
+          </div>
+          <p id="tracking-help" class="track-help">Your tracking code starts with <strong>KASA-</strong>. Keep it private; anyone with the code can view the project's public status.</p>
+        </form>
+
+        <div id="track-feedback" class="track-feedback" role="status" aria-live="polite" hidden></div>
+
+        <section id="project-result" class="track-result" aria-labelledby="result-heading" hidden>
+          <div class="track-result-heading">
+            <div>
+              <p class="eyebrow blue">PROJECT OVERVIEW</p>
+              <h2 id="result-heading">Project details</h2>
+            </div>
+            <span id="project-status" class="project-status"></span>
+          </div>
+
+          <h3 id="project-title" class="tracked-project-title"></h3>
+
+          <dl class="track-metadata">
+            <div>
+              <dt>Submitted</dt>
+              <dd id="submitted-date">—</dd>
+            </div>
+            <div>
+              <dt>Last updated</dt>
+              <dd id="updated-date">—</dd>
+            </div>
+          </dl>
+
+          <div id="public-note-section" class="public-note-section" hidden>
+            <p class="eyebrow blue">UPDATE FROM KASA LAB</p>
+            <p id="public-note" class="public-note"></p>
+            <p id="public-note-date" class="public-note-date"></p>
+          </div>
+          <p id="no-public-note" class="no-public-note">There are no additional public updates for this project yet.</p>
+        </section>
+      </div>
+
+      <div class="track-security-note">
+        <strong>Need help?</strong>
+        <p>If you have misplaced your tracking code or have a question about your request, please <a href="contact.html">contact KASA Lab</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="footer-brand" href="index.html">KASA Lab</a>
+    <p>Knowledge-based Advanced Solutions Association</p>
+    <div class="footer-links">
+      <a href="services.html">Services</a>
+      <a href="about.html">About Us</a>
+      <a href="news.html">News</a>
+      <a href="contact.html">Contact</a>
+      <a href="track-project.html">Track Project</a>
+    </div>
+    <small>© <span id="year"></span> KASA Lab. All rights reserved.</small>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    (() => {
+      const form = document.getElementById("tracking-form");
+      const input = document.getElementById("tracking-code");
+      const button = document.getElementById("track-button");
+      const feedback = document.getElementById("track-feedback");
+      const resultPanel = document.getElementById("project-result");
+
+      const statusElement = document.getElementById("project-status");
+      const titleElement = document.getElementById("project-title");
+      const submittedElement = document.getElementById("submitted-date");
+      const updatedElement = document.getElementById("updated-date");
+      const noteSection = document.getElementById("public-note-section");
+      const noteElement = document.getElementById("public-note");
+      const noteDateElement = document.getElementById("public-note-date");
+      const noNoteElement = document.getElementById("no-public-note");
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      function showFeedback(message, type) {
+        feedback.className = `track-feedback ${type}`;
+        feedback.textContent = message;
+        feedback.hidden = false;
+        resultPanel.hidden = true;
+      }
+
+      function formatDate(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return new Intl.DateTimeFormat("en-GB", {
+          day: "numeric", month: "long", year: "numeric",
+          hour: "2-digit", minute: "2-digit", timeZone: "UTC",
+          timeZoneName: "short"
+        }).format(date);
+      }
+
+      function statusClass(status) {
+        const normalized = String(status || "").toLowerCase();
+        if (normalized === "submitted") return "status-submitted";
+        if (normalized.includes("review")) return "status-review";
+        if (normalized.includes("progress")) return "status-progress";
+        if (normalized.includes("complete")) return "status-complete";
+        if (normalized.includes("reject") || normalized.includes("cancel")) return "status-closed";
+        return "status-default";
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const rawCode = input.value.trim();
+
+        if (!/^KASA-[A-Fa-f0-9]{48}$/i.test(rawCode)) {
+          showFeedback("Please enter a valid tracking code in the format KASA- followed by 48 hexadecimal characters.", "error");
+          input.focus();
+          return;
+        }
+
+        const trackingCode = "KASA-" + rawCode.slice(5).toLowerCase();
+        button.disabled = true;
+        button.textContent = "Checking…";
+        feedback.hidden = true;
+        resultPanel.hidden = true;
+
+        try {
+          const response = await fetch("/api/projects/track", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: JSON.stringify({ trackingCode })
+          });
+
+          let data;
+          try {
+            data = await response.json();
+          } catch {
+            throw new Error("The server returned an unexpected response. Please try again later.");
+          }
+
+          if (response.status === 429) {
+            throw new Error("Too many attempts. Please wait before trying again.");
+          }
+
+          if (!response.ok || !data.success || !data.project) {
+            throw new Error(data.message || "We could not find a project with that tracking code.");
+          }
+
+          const project = data.project;
+          const status = String(project.status || "Status unavailable");
+
+          titleElement.textContent = project.projectTitle || "Untitled project";
+          statusElement.textContent = status;
+          statusElement.className = `project-status ${statusClass(status)}`;
+          submittedElement.textContent = formatDate(project.submittedAt);
+          updatedElement.textContent = formatDate(project.updatedAt);
+
+          const hasNote = typeof project.publicNote === "string" && project.publicNote.trim().length > 0;
+          noteSection.hidden = !hasNote;
+          noNoteElement.hidden = hasNote;
+
+          if (hasNote) {
+            noteElement.textContent = project.publicNote;
+            noteDateElement.textContent = project.publicNoteUpdatedAt
+              ? `Updated ${formatDate(project.publicNoteUpdatedAt)}`
+              : "";
+          } else {
+            noteElement.textContent = "";
+            noteDateElement.textContent = "";
+          }
+
+          feedback.hidden = true;
+          resultPanel.hidden = false;
+          resultPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (error) {
+          showFeedback(
+            error instanceof Error ? error.message : "Something went wrong. Please try again later.",
+            "error"
+          );
+        } finally {
+          button.disabled = false;
+          button.textContent = "Track project";
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
