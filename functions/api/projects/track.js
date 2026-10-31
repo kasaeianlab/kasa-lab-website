@@ -62,21 +62,27 @@ export async function onRequestPost({ request, env }) {
     }, 400);
   }
 
-  // Normalize tracking code.
-  const trackingCode =
+  // Read and validate tracking code.
+  const rawTrackingCode =
     typeof body.trackingCode === "string"
-      ? body.trackingCode.trim().toUpperCase()
+      ? body.trackingCode.trim()
       : "";
 
-  // Generated codes have the format KASA- followed by 48 hex characters.
-  if (!/^KASA-[A-F0-9]{48}$/.test(trackingCode)) {
+  // Tracking codes contain KASA- followed by 48 hexadecimal characters.
+  if (!/^KASA-[A-Fa-f0-9]{48}$/i.test(rawTrackingCode)) {
     return jsonResponse({
       success: false,
       message: "Please enter a valid tracking code."
     }, 400);
   }
 
-  // Hash the submitted code using the existing secret.
+  // Normalize only the hexadecimal part.
+  // This preserves consistency with the original submission code.
+  const trackingCode =
+    "KASA-" + rawTrackingCode.slice(5).toLowerCase();
+
+  // Hash the tracking code using the same secret and format
+  // used when the project was originally submitted.
   let trackingHash;
 
   try {
@@ -107,6 +113,7 @@ export async function onRequestPost({ request, env }) {
       .bind(trackingHash)
       .first();
 
+    // No matching project.
     if (!project) {
       return jsonResponse({
         success: false,
@@ -114,6 +121,7 @@ export async function onRequestPost({ request, env }) {
       }, 404);
     }
 
+    // Return public information only.
     return jsonResponse({
       success: true,
       project: {
