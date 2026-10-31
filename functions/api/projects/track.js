@@ -1,4 +1,7 @@
 
+const RATE_LIMIT = 5;
+const RATE_WINDOW_SECONDS = 15 * 60;
+
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -19,9 +22,70 @@ async function sha256Hex(value) {
     .join("");
 }
 
+async function checkRateLimit(request, env) {
+  const ip = request.headers.get("CF-Connecting-IP");
+
+  if (!ip) {
+    return { allowed: false, error: true };
+  }
+
+  const ipHash = await sha256Hex(
+    `${env.RATE_LIMIT_SALT}:${ip}`
+  );
+
+  const now = Math.floor(Date.now() / 1000);
+  const windowStart = now - RATE_WINDOW_SECONDS;
+
+  try {
+    const result = await env.DB.prepare(`
+      INSERT INTO tracking_rate_limits (
+        ip_hash,
+        request_count,
+        window_start
+      )
+      VALUES (?, 1, ?)
+
+      ON CONFLICT(ip_hash) DO UPDATE SET
+        request_count = CASE
+          WHEN tracking_rate_limits.window_start <= ?
+          THEN 1
+          ELSE tracking_rate_limits.request_count + 1
+        END,
+        window_start = CASE
+          WHEN tracking_rate_limits.window_start <= ?
+          THEN excluded.window_start
+          ELSE tracking_rate_limits.window_start
+        END
+
+      RETURNING request_count, window_start
+    `)
+      .bind(ipHash, now, windowStart, windowStart)
+      .first();
+
+    if (!result) {
+      return { allowed: false, error: true };
+    }
+
+    return {
+      allowed: result.request_count <= RATE_LIMIT,
+      retryAfter: Math.max(
+        1,
+        result.window_start + RATE_WINDOW_SECONDS - now
+      )
+    };
+
+  } catch {
+    return { allowed: false, error: true };
+  }
+}
+
 export async function onRequestPost({ request, env }) {
   // Check required configuration.
-  if (!env.DB || !env.TRACKING_HASH_SECRET) {
+  if (
+    !env.DB ||
+    !env.TRACKING_HASH_SECRET ||
+    !env.RATE_LIMIT_SALT
+  ) {
     return jsonResponse({
       success: false,
       message: "The tracking service is not fully configured."
@@ -50,6 +114,34 @@ export async function onRequestPost({ request, env }) {
     }, 413);
   }
 
+  // Apply rate limiting before processing the tracking code.
+  const rateLimit = await checkRateLimit(request, env);
+
+  if (rateLimit.error) {
+    return jsonResponse({
+      success: false,
+      message: "The tracking service is temporarily unavailable."
+    }, 503);
+  }
+
+  if (!rateLimit.allowed) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: "Too many tracking attempts. Please try again later."
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "no-store",
+          "Retry-After": String(rateLimit.retryAfter),
+          "X-Content-Type-Options": "nosniff"
+        }
+      }
+    );
+  }
+
   // Read request body.
   let body;
 
@@ -68,7 +160,6 @@ export async function onRequestPost({ request, env }) {
       ? body.trackingCode.trim()
       : "";
 
-  // Tracking codes contain KASA- followed by 48 hexadecimal characters.
   if (!/^KASA-[A-Fa-f0-9]{48}$/i.test(rawTrackingCode)) {
     return jsonResponse({
       success: false,
@@ -77,12 +168,10 @@ export async function onRequestPost({ request, env }) {
   }
 
   // Normalize only the hexadecimal part.
-  // This preserves consistency with the original submission code.
   const trackingCode =
     "KASA-" + rawTrackingCode.slice(5).toLowerCase();
 
-  // Hash the tracking code using the same secret and format
-  // used when the project was originally submitted.
+  // Hash the tracking code.
   let trackingHash;
 
   try {
@@ -113,7 +202,6 @@ export async function onRequestPost({ request, env }) {
       .bind(trackingHash)
       .first();
 
-    // No matching project.
     if (!project) {
       return jsonResponse({
         success: false,
@@ -121,7 +209,6 @@ export async function onRequestPost({ request, env }) {
       }, 404);
     }
 
-    // Return public information only.
     return jsonResponse({
       success: true,
       project: {
