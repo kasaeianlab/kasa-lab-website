@@ -544,7 +544,7 @@
           statusBox.replaceChildren();
 
           const heading = document.createElement("h2");
-          heading.textContent = "Thank you for contacting KASA Lab";
+          heading.textContent = "Thank you for submitting your project";
 
           const message = document.createElement("p");
           message.textContent = result.message ||
@@ -582,11 +582,18 @@
             copyButton
           );
 
-          if (result.emailSent === false) {
+          if (result.applicantConfirmationSent === false) {
             const emailWarning = document.createElement("p");
             emailWarning.textContent =
-              "Email notification could not be confirmed. Your request may still be saved; please keep your tracking code.";
+              "We could not confirm delivery of the confirmation email. Your request is saved; please keep your tracking code and check your spam folder.";
             statusBox.appendChild(emailWarning);
+          }
+
+          if (result.emailSent === false) {
+            const adminWarning = document.createElement("p");
+            adminWarning.textContent =
+              "The administrator notification could not be confirmed, but your request has been saved.";
+            statusBox.appendChild(adminWarning);
           }
 
           statusBox.hidden = false;

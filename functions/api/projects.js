@@ -99,6 +99,64 @@ async function checkRateLimit(env, ipHash, now) {
   );
 }
 
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>\"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '\"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+async function sendApplicantConfirmation(env, project, trackingCode) {
+  if (!env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) return false;
+
+  const trackingUrl = "https://kasalab.org/track-project.html";
+  const safeName = escapeHtml(project.name);
+  const safeTitle = escapeHtml(project.project_title);
+  const safeCode = escapeHtml(trackingCode);
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: env.RESEND_FROM_EMAIL,
+        to: [project.email],
+        reply_to: env.ADMIN_EMAIL || "kasaeian.lab@gmail.com",
+        subject: `KASA Lab received your project request: ${project.project_title}`,
+        text: [
+          `Dear ${project.name},`,
+          "",
+          "Thank you for submitting your project request to KASA Lab. We have successfully received it.",
+          "",
+          `Project title: ${project.project_title}`,
+          `Your tracking code: ${trackingCode}`,
+          "",
+          `You can check the status of your request here: ${trackingUrl}`,
+          "Please keep your tracking code safe. You will need it to access your submission status.",
+          "",
+          "Our team will review your request and contact you if further information is needed.",
+          "",
+          "For direct inquiries, contact kasaeian.lab@gmail.com.",
+          "",
+          "Best regards,",
+          "KASA Lab"
+        ].join("\n"),
+        html: `<!doctype html><html><body style="margin:0;padding:32px 16px;background:#f5f8fb;font-family:Arial,sans-serif;color:#1a2a3d"><div style="max-width:600px;margin:0 auto;background:#ffffff;padding:32px;border:1px solid #e3eaf1;border-radius:12px"><h2 style="color:#10294a;margin-top:0">Thank you for contacting KASA Lab</h2><p>Dear ${safeName},</p><p>We have successfully received your project request. Our team will review the information and contact you if further details are needed.</p><p><strong>Project:</strong> ${safeTitle}</p><p style="margin-bottom:8px"><strong>Your tracking code:</strong></p><p style="padding:14px;background:#eaf3fb;border-radius:8px;font-size:18px;font-weight:bold;letter-spacing:1px;overflow-wrap:anywhere">${safeCode}</p><p><a href="${trackingUrl}" style="display:inline-block;background:#1769c2;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:6px">Track your project</a></p><p>Please keep your tracking code safe. You will need it to access your submission status.</p><hr style="border:0;border-top:1px solid #e3eaf1;margin:24px 0"><p>For direct inquiries, contact <a href="mailto:kasaeian.lab@gmail.com">kasaeian.lab@gmail.com</a>.</p><p>Best regards,<br><strong>KASA Lab</strong></p></div></body></html>`
+      })
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 async function sendNotification(env, project, trackingCode) {
   if (
     !env.RESEND_API_KEY ||
@@ -362,8 +420,9 @@ export async function onRequestPost({ request, env }) {
     }, 500);
   }
 
-  // Send administrative email notification.
-  const emailSent = await sendNotification(
+  // Send email notifications independently. A mail failure must not undo a saved request.
+  const emailSent = await sendNotification(env, project, trackingCode);
+  const applicantConfirmationSent = await sendApplicantConfirmation(
     env,
     project,
     trackingCode
@@ -390,8 +449,7 @@ export async function onRequestPost({ request, env }) {
     projectId,
     trackingCode,
     emailSent,
-    message: emailSent
-      ? "Your request has been submitted successfully."
-      : "Your request has been saved, but email notification could not be confirmed. Please keep your tracking code."
+    applicantConfirmationSent,
+    message: "Your project request has been saved successfully. Please keep your tracking code."
   }, 201);
 }
