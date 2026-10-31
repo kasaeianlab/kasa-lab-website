@@ -1,21 +1,25 @@
-import { ADMIN_EMAIL, json, randomHex, hmacHex, consumeRateLimit, sendOtpEmail } from "../../../_lib/admin-auth.js";
+import { ADMIN_EMAIL, json, randomHex, hmacHex, consumeRateLimit, sendOtpEmail, requireSameOrigin } from "../../../_lib/admin-auth.js";
 
 export async function onRequestPost({ request, env }) {
+  if (!requireSameOrigin(request)) return json({ success: false, message: "Invalid request origin." }, 403);
   if (!env.DB || !env.ADMIN_AUTH_SECRET || !env.RESEND_API_KEY || !env.RESEND_FROM_EMAIL) {
     return json({ success: false, message: "Authentication service is not configured." }, 503);
   }
   const ip = request.headers.get("CF-Connecting-IP") || "unknown";
   const ipKey = await hmacHex(env.ADMIN_AUTH_SECRET, `request-ip:${ip}`);
-  const emailKey = await hmacHex(env.ADMIN_AUTH_SECRET, `request-email:${ADMIN_EMAIL}`);
   const ipLimit = await consumeRateLimit(env, `request:${ipKey}`, 5, 15 * 60);
-  const emailLimit = await consumeRateLimit(env, `request:${emailKey}`, 3, 15 * 60);
-  if (!ipLimit.allowed || !emailLimit.allowed) {
-    return json({ success: false, message: "Too many sign-in requests. Please try again later." }, 429, { "Retry-After": String(Math.max(ipLimit.retryAfter, emailLimit.retryAfter)) });
+  if (!ipLimit.allowed) {
+    return json({ success: false, message: "Too many sign-in requests. Please try again later." }, 429, { "Retry-After": String(ipLimit.retryAfter) });
   }
   let body;
   try { body = await request.json(); } catch { return json({ success: false, message: "Invalid request." }, 400); }
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   if (email !== ADMIN_EMAIL) return json({ success: true, message: "If this address is authorized, a sign-in code will be sent." });
+  const emailKey = await hmacHex(env.ADMIN_AUTH_SECRET, `request-email:${ADMIN_EMAIL}`);
+  const emailLimit = await consumeRateLimit(env, `request:${emailKey}`, 3, 15 * 60);
+  if (!emailLimit.allowed) {
+    return json({ success: false, message: "Too many sign-in requests. Please try again later." }, 429, { "Retry-After": String(emailLimit.retryAfter) });
+  }
 
   const now = Math.floor(Date.now() / 1000);
   const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1000000).padStart(6, "0");

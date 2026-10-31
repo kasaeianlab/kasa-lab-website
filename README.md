@@ -6,7 +6,7 @@ A simple English-language static website for KASA Lab, built with HTML, CSS and 
 - `index.html` — Home
 - `about.html` — About and team starter section
 - `news.html` — News starter cards
-- `contact.html` — Contact form layout (not connected yet)
+- `contact.html` — Legacy redirect to `submit-project.html`
 
 ## Important before publishing
 1. Replace placeholder team/news content with approved real information.

@@ -1,6 +1,7 @@
-import { ADMIN_EMAIL, json, randomHex, hmacHex, consumeRateLimit, sessionCookie, SESSION_SECONDS } from "../../../_lib/admin-auth.js";
+import { ADMIN_EMAIL, json, randomHex, hmacHex, consumeRateLimit, sessionCookie, SESSION_SECONDS, requireSameOrigin } from "../../../_lib/admin-auth.js";
 
 export async function onRequestPost({ request, env }) {
+  if (!requireSameOrigin(request)) return json({ success: false, message: "Invalid request origin." }, 403);
   if (!env.DB || !env.ADMIN_AUTH_SECRET) return json({ success: false, message: "Authentication service is not configured." }, 503);
   const ip = request.headers.get("CF-Connecting-IP") || "unknown";
   const ipKey = await hmacHex(env.ADMIN_AUTH_SECRET, `verify-ip:${ip}`);

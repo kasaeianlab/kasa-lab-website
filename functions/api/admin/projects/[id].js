@@ -1,4 +1,4 @@
-import { json, requireAdmin } from "../../../_lib/admin-auth.js";
+import { json, requireAdmin, requireSameOrigin } from "../../../_lib/admin-auth.js";
 
 const ALLOWED_STATUSES = new Set(["Submitted", "Under Review", "Accepted", "Rejected", "Completed"]);
 
@@ -26,6 +26,7 @@ export async function onRequestGet({ request, env, params }) {
 }
 
 export async function onRequestPatch({ request, env, params }) {
+  if (!requireSameOrigin(request)) return json({ success: false, message: "Invalid request origin." }, 403);
   const auth = await requireAdmin(request, env);
   if (auth.unavailable) return json({ success: false, message: "Authentication service is unavailable." }, 503);
   if (!auth.ok) return json({ success: false, message: "Unauthorized." }, 401);

@@ -1,6 +1,7 @@
-import { json, cookieValue, hmacHex, sessionCookie } from "../../../_lib/admin-auth.js";
+import { json, cookieValue, hmacHex, sessionCookie, requireSameOrigin } from "../../../_lib/admin-auth.js";
 
 export async function onRequestPost({ request, env }) {
+  if (!requireSameOrigin(request)) return json({ success: false, message: "Invalid request origin." }, 403);
   if (env.DB && env.ADMIN_AUTH_SECRET) {
     const token = cookieValue(request, "__Host-kasa_admin");
     if (/^[a-f0-9]{64}$/.test(token)) {

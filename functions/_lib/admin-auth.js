@@ -28,6 +28,18 @@ export async function hmacHex(secret, value) {
   return Array.from(new Uint8Array(signature), b => b.toString(16).padStart(2, "0")).join("");
 }
 
+
+export function requireSameOrigin(request) {
+  const origin = request.headers.get("Origin");
+  if (!origin) return false;
+  try {
+    const expected = new URL(request.url).origin;
+    return new URL(origin).origin === expected;
+  } catch {
+    return false;
+  }
+}
+
 export function cookieValue(request, name) {
   const cookie = request.headers.get("Cookie") || "";
   for (const part of cookie.split(";")) {
