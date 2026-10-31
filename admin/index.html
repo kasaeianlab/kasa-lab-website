@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>KASA Lab | Admin Sign In</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .admin-wrap{max-width:480px;margin:72px auto;padding:0 20px}.admin-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px;box-shadow:0 12px 36px rgba(16,41,74,.08)}
+    .admin-card h1{margin:0 0 10px;color:var(--navy);font-size:28px}.admin-card p{color:var(--muted);line-height:1.65}.admin-card label{display:block;margin:18px 0 7px;font-weight:600;color:var(--ink)}
+    .admin-card input{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid var(--line);border-radius:9px;font:inherit}.admin-card button{width:100%;margin-top:18px;padding:13px;border:0;border-radius:9px;background:var(--blue);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+    .admin-message{margin-top:16px;padding:12px;border-radius:8px;background:var(--soft);color:var(--ink);display:none}.admin-message.error{background:#fff0f0;color:#9b2525}.admin-step[hidden]{display:none}
+  </style>
+</head>
+<body>
+  <main class="admin-wrap"><section class="admin-card">
+    <h1>KASA Lab Admin</h1><p>Sign in with the authorized administrator email address.</p>
+    <form id="request-form" class="admin-step">
+      <label for="email">Administrator email</label><input id="email" type="email" autocomplete="username" value="kasaeian.lab@gmail.com" required>
+      <button type="submit">Send sign-in code</button>
+    </form>
+    <form id="verify-form" class="admin-step" hidden>
+      <label for="code">Six-digit verification code</label><input id="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required>
+      <button type="submit">Verify and sign in</button>
+    </form>
+    <div id="message" class="admin-message" role="status" aria-live="polite"></div>
+  </section></main>
+<script>
+const requestForm=document.getElementById('request-form');const verifyForm=document.getElementById('verify-form');const message=document.getElementById('message');const emailInput=document.getElementById('email');
+function showMessage(text,error=false){message.textContent=text;message.style.display='block';message.classList.toggle('error',error)}
+async function post(url,data){const response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(data)});const result=await response.json().catch(()=>({message:'Unexpected server response.'}));if(!response.ok)throw new Error(result.message||'Request failed.');return result}
+(async()=>{try{const r=await fetch('/api/admin/auth/me',{credentials:'same-origin',cache:'no-store'});if(r.ok){location.replace('/admin/dashboard.html')}}catch{}})();
+requestForm.addEventListener('submit',async e=>{e.preventDefault();const button=requestForm.querySelector('button');button.disabled=true;try{const result=await post('/api/admin/auth/request',{email:emailInput.value});showMessage(result.message);requestForm.hidden=true;verifyForm.hidden=false;document.getElementById('code').focus()}catch(err){showMessage(err.message,true)}finally{button.disabled=false}});
+verifyForm.addEventListener('submit',async e=>{e.preventDefault();const button=verifyForm.querySelector('button');button.disabled=true;try{await post('/api/admin/auth/verify',{email:emailInput.value,code:document.getElementById('code').value});location.replace('/admin/dashboard.html')}catch(err){showMessage(err.message,true)}finally{button.disabled=false}});
+</script>
+</body></html>
