@@ -2,7 +2,7 @@
 name: Mohammad Ghaziasgar
 role: Ph.D Researcher
 group: researchers
-order: 3
+order: 2
 photo: /public/images/MGhazi.jpeg
 linkedin: https://www.linkedin.com/in/sghaziasgar/
 bio: >-
