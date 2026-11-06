@@ -1,6 +1,6 @@
 ---
-name: Nastaran
-role: Zirak
+name: Nastaran Zirak
+role: Graduate Researcher
 group: researchers
 order: 1
 photo: /public/images/NZirak.jpeg
