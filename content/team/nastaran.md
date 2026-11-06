@@ -3,7 +3,7 @@ name: Nastaran Zirak
 role: Graduate Researcher
 group: researchers
 order: 1
-photo: /public/images/NZirak.jpeg
+photo: /public/images/NZirak1.jpeg
 linkedin: https://www.linkedin.com/in/nastaranzirak/
 bio: Nastaran is an Energy Systems Engineer with an M.Sc. in Energy Systems
   Engineering - Energy Technologies from the University of Tehran. Her research
